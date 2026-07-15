@@ -1,0 +1,40 @@
+name: Paper synchronization
+description: Import or update approved Paper 1 source after acceptance
+title: "paper: "
+labels: ["paper"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Paper version
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source and provenance
+      description: Identify the approved source, branch, commit, and date.
+    validations:
+      required: true
+  - type: textarea
+    id: gates
+    attributes:
+      label: Accepted gates and claims affected
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: Reviewer acceptance
+      description: Link the independent review and Principal Investigator authorization.
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope confirmation
+      options:
+        - label: This update contains Paper 1 material only.
+          required: true
+        - label: No unreviewed result is promoted into paper prose.
+          required: true
