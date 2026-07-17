@@ -2,50 +2,62 @@
 
 ## Current task
 
-Infrastructure initialization.
+Gated-repository governance import for Paper 1 (v16.3) — complete on branch
+`claude/paper1-gated-repo-governance-z478hp`.
 
 ## Scientific question
 
-None. No physics gate is being run.
+None new. This was an infrastructure/governance import: no science was
+recomputed, revised, or reinterpreted.
 
 ## Locked inputs
 
-Repository identity only.
+- Scientific record: `zetacheng/yukawa-sparc-fits` @ `fd3b2b6…` (byte-for-byte).
+- Paper: PI-supplied v16.3 (`paper/yukawa_sparc_paper_v163.tex`).
+- Conventions: `CONVENTIONS.md` (dAIC, free-μ vs prior, grids, error-floor vs
+  intrinsic-scatter, in-coverage cut, units, `a0_MOND` reference).
 
 ## Do not reopen
 
-None recorded yet.
+- The `dAIC` definition (same-config, Yukawa-selected `(rmin, ef)`).
+- The two audit defects `P1-A0ERR-01` and `P1-RCSLOPE-01` — registered and
+  resolved-per-paper; do not re-fix in a governance sweep.
 
-## Required next input
+## Required next input / next items
 
-Latest paper source, approved progress file, historical branches and accepted result records.
+1. **`P1-A0ERR-01`** — import `a0_profile_likelihood.py` so the re-derived
+   `a0 = 0.95 ± 0.03 (stat)` (and the error-model systematic band) is
+   reproducible in-repo; add a regression anchor.
+2. **`P1-RCSLOPE-01`** — no computation outstanding (resolved v13); confirm the
+   in-repo sample-dependence anchor if a claim is ever attached.
+3. **Test coverage** — `P1-ISCATTER-01`: import `intrinsic_scatter_comparison.py`
+   and `heldout_validation.py`, add raw outputs and a regression anchor so
+   `P1-CL-007` / the intrinsic-scatter part of `P1-CL-008` are reproducible here.
+4. **v13 paper edits** — already implemented in the supplied v16.3 (θ-medium
+   language deleted, `r_c` power law restated as sample dependence, `a0` error
+   bar re-derived); no further paper edit is pending from this import. Any new
+   edit requires reviewer acceptance and PI authorization.
 
 ## Expected Codex output
 
-A clean repository foundation.
+The imported record, populated governance files, and a green regression suite.
 
 ## Questions for ChatGPT
 
-None during infrastructure initialization.
+None.
 
-## Questions for Claude
+## Questions for Claude (reviewer)
 
-None during infrastructure initialization.
+File an independent review under `reviews/claude/` so the `SUPPORTED` claims can
+be considered for promotion to `VERIFIED`.
+
+## Open decision for the PI
+
+Repository-naming inconsistency: the paper cites the `yukawa-sparc-fits` URL,
+but governance now lives in `1-dark-matter-structure`. See the final report.
 
 ## Role separation
 
-### ChatGPT
-
-ChatGPT handles conceptual discussion, physical interpretation, analytic derivation planning, gate design, preparation of calculation specifications, and identification of assumptions and competing interpretations. ChatGPT does not certify numerical results.
-
-### Codex
-
-Codex handles repository maintenance, symbolic and numerical implementation, tests, regression anchors, reproducibility, result files, and branch and commit discipline. Codex must not promote a result into a paper claim without review.
-
-### Claude
-
-Claude is the independent reviewer and discriminator, reviewing derivations and results, recording whether a gate passes, identifying overclaims, and updating the paper only after results are accepted.
-
-### User / Principal Investigator
-
-The User / Principal Investigator owns the physical programme, approves assumptions, gates and scope changes, accepts or rejects final verdicts, and decides when paper text may be updated.
+Unchanged (see `AGENTS.md`): ChatGPT (conceptual), Codex (implementation), Claude
+(independent review), PI (authority). Codex must not promote a result to a claim
+without review; no `.tex` edit before reviewer acceptance.
