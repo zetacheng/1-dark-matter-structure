@@ -1,0 +1,27 @@
+Paper 1 — results/nuisance reproduction environment
+=======================================================
+
+Import / reproduction environment (2026-07-16)
+  Python    : 3.11.15
+  NumPy     : 2.4.6
+  SciPy     : 1.17.1
+  pandas    : 3.0.3
+  matplotlib: 3.11.0
+  Platform  : Linux-6.18.5-x86_64-with-glibc2.39 (x86_64)
+
+Independent reviewer reproduction (per PI hand-off; clean Linux environment)
+  Python    : 3.12.3
+  NumPy     : 2.4.4
+
+Source record
+  Repository  : zetacheng/yukawa-sparc-fits
+  Commit      : fd3b2b615194ed076df3d45cbe97fd0f2e4f2452
+  Branch      : claude/repo-setup-rerun-q0wws6
+  Requirements: numpy>=1.24, scipy>=1.10, pandas>=2.0, matplotlib>=3.7
+
+Cross-platform note
+  Regression anchors use stated numerical tolerances, NOT byte-identity:
+  floating-point reduction order differs across BLAS builds and platforms.
+  On the import environment above, the (import-refactored) scripts reproduce
+  every committed CSV byte-for-byte; that equality is not guaranteed across
+  platforms and must not be used as an acceptance criterion.
