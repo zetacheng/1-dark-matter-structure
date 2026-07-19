@@ -2,8 +2,15 @@
 
 ## Current task
 
-Gated-repository governance import for Paper 1 (v16.3) — complete on branch
-`claude/paper1-gated-repo-governance-z478hp`.
+Gated-repository governance import for Paper 1 — complete. The `PROG-SYNC-01`
+Paper 1 edit (v16.4) is **done** on branch `paper/v16.4-sync`: the topological-DM
+route is withdrawn as a live direction (companion gate `P5-OMEGA-01` `FAILED`),
+`P1-CL-011` registered `FAILED`. **The branch is now clear to merge** (pending
+reviewer verification and PI authorization of the merge path).
+
+Earlier state: the v16.3 governance import on
+`claude/paper1-gated-repo-governance-z478hp` was reviewer-checked and sound but
+held from merging solely for this v16.4 withdrawal; that hold is now released.
 
 ## Scientific question
 

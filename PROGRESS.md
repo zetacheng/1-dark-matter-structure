@@ -8,7 +8,10 @@ Scientific record source: `zetacheng/yukawa-sparc-fits` (commit `fd3b2b6…`)
 
 ## Current version
 
-**v16.3** — `paper/yukawa_sparc_paper_v163.tex` (PI-supplied 2026-07-16).
+**v16.4** — `paper/yukawa_sparc_paper_v164.tex` (PI-supplied 2026-07-19; v16.3
+retained alongside). v16.4 withdraws the topological-DM route from
+future-directions (companion gate `P5-OMEGA-01` `FAILED`); documentation only,
+no science changed.
 
 ## Current scientific status
 
@@ -30,12 +33,15 @@ claim is `VERIFIED`. Claims `P1-CL-001` … `P1-CL-008` are `SUPPORTED`
   physical stellar normalization (58% → 7% / 2%).
 - `P1-CL-010` — RETIRED: the `a0 ~ Λ_DE²/M_Pl` relation is an observed-number
   coincidence (v16.3), not a framework prediction.
+- `P1-CL-011` — FAILED: the topological-DM route (companion gate `P5-OMEGA-01`)
+  yields no continuum object; withdrawn as a live direction in v16.4.
 - Audit defects `P1-A0ERR-01`, `P1-RCSLOPE-01` — RETIRED (resolved in paper
   v13–v15), registered not silently fixed.
 
 ## Active work
 
-Governance import complete on `claude/paper1-gated-repo-governance-z478hp`.
+Governance import complete on `claude/paper1-gated-repo-governance-z478hp`;
+v16.4 withdrawal on `paper/v16.4-sync` (clear to merge).
 
 ## Blocked items
 

@@ -126,6 +126,55 @@ None.
 Branch `claude/paper1-gated-repo-governance-z478hp`; `GATES.md`,
 `results/intrinsic-scatter/`.
 
+## 2026-07-19 — Import Paper 1 v16.4; withdraw the topological-DM route as a live direction
+
+### Decision
+
+Import paper v16.4 (`paper/yukawa_sparc_paper_v164.tex`, PI-supplied) alongside
+v16.3. v16.4 withdraws the negative-quartic + endogenous-omega-repulsion
+topological-DM route from future-directions: the paragraph now states the
+competition was computed and yields no continuum object, and the route is
+recorded among the closed ones. Register the failure in the ledger as
+`P1-CL-011` (`FAILED`).
+
+### Reason
+
+The v16.3 future-directions paragraph presented that route as "the live
+microscopic direction, distinct from every route closed above." That route
+**is** companion gate `P5-OMEGA-01`, which has run and `FAILED`
+(cutoff-scale collapse, no continuum window at any coupling). The equivalence
+was proved by quotation against the `.tex` in
+`0-programme/reviews/PROG-SYNC-01.md` (reviewer independently confirmed). The
+live-direction registration had to be withdrawn before the governance import
+branch merges.
+
+### Evidence
+
+- `zetacheng/5-topological-sector` gate `P5-OMEGA-01`, Status `FAIL`, reviewer
+  record `reviews/claude/2026-07-16-p5-omega-01.md` (verified: HEAD `234c458`).
+- `0-programme/reviews/PROG-SYNC-01.md` (`PROG-SYNC-01`).
+- Paper diff v16.3 → v16.4: banner comment + the single future-directions
+  paragraph only; no number, section, script, result, or test changed.
+
+### Consequences
+
+Documentation only. `P1-CL-011` `FAILED` added; `P1-CL-010` (`RETIRED`) and all
+data-side claims unchanged. The governance import branch is now clear to merge
+(pending reviewer verification and PI authorization of the merge path).
+
+### Supersedes
+
+None (extends the 2026-07-16 import decisions).
+
+### Related gate
+
+`P5-OMEGA-01` (cross-repo, `5-topological-sector`).
+
+### Related branch and files
+
+Branch `paper/v16.4-sync`; `paper/yukawa_sparc_paper_v164.tex`, `CLAIMS.md`,
+`PROGRESS.md`, `HANDOFF.md`.
+
 ## Entry template
 
 ## YYYY-MM-DD — Decision title
