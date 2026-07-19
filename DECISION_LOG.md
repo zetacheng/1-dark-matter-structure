@@ -175,6 +175,64 @@ None (extends the 2026-07-16 import decisions).
 Branch `paper/v16.4-sync`; `paper/yukawa_sparc_paper_v164.tex`, `CLAIMS.md`,
 `PROGRESS.md`, `HANDOFF.md`.
 
+## 2026-07-19 — Blind reconstruction of the intrinsic-scatter comparison reproduces the paper
+
+### Decision
+
+Register gate `P1-ISCATTER-REPRO-01`: an independent, pre-registered, blind
+reconstruction of the lost `intrinsic_scatter_comparison.py` result. Outcome:
+**REPRODUCED** — every pre-registered quantity within its pre-registered
+tolerance. `P1-CL-007` is now backed in-repo by this reconstruction (kept
+`SUPPORTED`).
+
+### Reason
+
+`P1-CL-007` (and the intrinsic-scatter part of `P1-CL-008`) rested only on
+external evidence because the producing script is lost. A reconstruction with
+genuine provenance was needed to confirm or refute `dAIC` +4859 / −1614.
+
+### Method / discipline
+
+Pre-registered every choice in `derivations/p1-iscatter-repro/PREREGISTRATION.md`
+before computing (kernel, nuisance grids, the intrinsic-scatter likelihood
+substitution, `f_int` optimizer, `a0`/kernel grids, AIC/k counting, sample,
+tolerances). Computed blind (`9fcfd5a`), then compared (`COMPARISON.md`). Target
+values never entered the code or tolerances.
+
+### Result
+
+Reconstruction `dAIC` Yukawa **+4857** (paper +4859), NFW **−1621** (paper
+−1614); `f_int` 0.0515/0.1577/0.0330 (paper 0.050/0.156/0.034); `a0` 9.777e-11
+(paper 9.58e-11); median χ²/pt 0.840/0.740/0.647 (paper 0.83/0.75/0.65). All
+within tolerance.
+
+### Caveat
+
+Per the task's instruction to reuse machinery, the reconstruction imports
+`nuisance_comparison.py` (same author's SPARC parser, nuisance grids, kernels).
+Independence is at the likelihood-substitution + driver level, not a clean-room
+reimplementation; a shared-machinery bug would be reproduced, not caught. Hence
+`SUPPORTED`, not `VERIFIED`.
+
+### Consequences
+
+`P1-ISCATTER-01` stays SUSPENDED (it tracks the lost original) but points to the
+reconstruction. `P1-CL-007` evidence updated. Regression + mutation anchor added
+(`tests/test_regression_iscatter_repro.py`).
+
+### Supersedes
+
+None.
+
+### Related gate
+
+`P1-ISCATTER-REPRO-01`, `P1-ISCATTER-01`.
+
+### Related branch and files
+
+Branch `paper/v16.4-sync`; `derivations/p1-iscatter-repro/`,
+`scripts/intrinsic_scatter_repro.py`, `results/intrinsic-scatter-repro/`.
+
 ## Entry template
 
 ## YYYY-MM-DD — Decision title

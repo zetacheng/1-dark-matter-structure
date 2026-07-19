@@ -444,13 +444,19 @@ confirming the two likelihoods are distinct.
 
 ### Reviewer verdict
 
-SUSPENDED pending artifact import — see `results/intrinsic-scatter/PROVENANCE.md`
-and `MIGRATION.md`.
+SUSPENDED pending recovery of the **original** artifact — see
+`results/intrinsic-scatter/PROVENANCE.md` and `MIGRATION.md`. The paper's numbers
+have since been **independently reconstructed** (gate `P1-ISCATTER-REPRO-01`,
+2026-07-19) and fall within the pre-registered tolerances; that reconstruction —
+not the lost original — now backs `P1-CL-007`. This gate stays SUSPENDED because
+it tracks the lost original artifact specifically.
 
 ### Consequences
 
-`P1-CL-007` and the intrinsic-scatter part of `P1-CL-008` are not independently
-reproducible here until the artifact is imported.
+`P1-CL-007` and the intrinsic-scatter part of `P1-CL-008` are now reproducible
+in-repo via the 2026 reconstruction (`P1-ISCATTER-REPRO-01`), with the caveat
+that the reconstruction reuses `nuisance_comparison.py` and is not a clean-room
+reimplementation.
 
 ### Repository branch
 
@@ -458,11 +464,94 @@ reproducible here until the artifact is imported.
 
 ### Relevant files
 
-`results/intrinsic-scatter/` (raw empty).
+`results/intrinsic-scatter/` (raw empty); reconstruction under
+`results/intrinsic-scatter-repro/`.
 
 ### Date opened / closed
 
-Registered 2026-07-16 / open (SUSPENDED).
+Registered 2026-07-16 / open (SUSPENDED); reconstruction filed 2026-07-19.
+
+---
+
+## P1-ISCATTER-REPRO-01 — Intrinsic-scatter comparison, 2026 reconstruction
+
+Status: PASS
+
+### Scientific question
+
+Does an independent reconstruction (built from the paper's method, blind to its
+numbers) confirm the intrinsic-scatter three-model comparison — `dAIC` RAR 0 /
+Yukawa +4859 / NFW −1614, `f_int` 0.050/0.156/0.034, `a0` 9.58e-11?
+
+### Scope
+
+Reconstruct the lost `intrinsic_scatter_comparison.py` result by substituting the
+intrinsic-scatter likelihood into the verified `nuisance_comparison.py` machinery.
+This is a **2026 reconstruction, not the original run**.
+
+### Locked assumptions
+
+Fixed in `derivations/p1-iscatter-repro/PREREGISTRATION.md` **before computing**:
+RAR kernel + single global `a0`; μ/d/i nuisance grids and priors reused verbatim;
+`σ_tot,i² = (e_V,i s)² + (f_int V_obs,i s)²` with one global `f_int` per model,
+Gaussian normalization retained; `a0` 25-point grid; `f_int` bounded-Brent on
+`[1e-3, 0.5]`; AIC/k counting stated (`f_int` cancels in `dAIC`, `a0` RAR-only);
+all 175 galaxies.
+
+### Inputs
+
+`data/MassModels_Lelli2016c.mrt`, `data/SPARC_Lelli2016c.mrt`.
+
+### Analytic anchors
+
+Per-galaxy `−2 ln L` reproducible from `rar_gal_is`/`kern_gal_is` at the fitted
+`(a0, f_int)`; `dAIC` from the pre-registered `k` counting.
+
+### Regression anchors
+
+`tests/test_regression_iscatter_repro.py` (imports `rar_gal_is`/`kern_gal_is`,
+re-runs a few galaxies against the committed `raw/iscatter_repro.csv`; committed
+mutation-discrimination assertion).
+
+### Kill criterion
+
+Any pre-registered quantity outside its pre-registered tolerance, or wrong sign /
+order of magnitude on any `dAIC`.
+
+### Required computations
+
+`python -m scripts.intrinsic_scatter_repro`.
+
+### Result
+
+Reconstruction: `a0` 9.777e-11; `dAIC` Yukawa **+4857**, NFW **−1621**; `f_int`
+0.0515 / 0.1577 / 0.0330; median χ²/pt 0.840 / 0.740 / 0.647. **All within the
+pre-registered tolerances** (`results/intrinsic-scatter-repro/COMPARISON.md`):
+outcome **REPRODUCED**.
+
+### Reviewer verdict
+
+PASS on the pre-registered anchors. Not `VERIFIED`: no independent reviewer
+re-run in this repository, and the reconstruction reuses `nuisance_comparison.py`
+(shared-machinery caveat in `COMPARISON.md`). Backs `P1-CL-007` as `SUPPORTED`.
+
+### Consequences
+
+Closes the in-repo reproducibility gap for `P1-CL-007` (via reconstruction, not
+the lost original). Confirms the paper's headline `dAIC` +4859/−1614.
+
+### Repository branch
+
+`paper/v16.4-sync`
+
+### Relevant files
+
+`scripts/intrinsic_scatter_repro.py`, `derivations/p1-iscatter-repro/`,
+`results/intrinsic-scatter-repro/`, `tests/test_regression_iscatter_repro.py`.
+
+### Date opened / closed
+
+Pre-registered + computed + compared 2026-07-19 / PASS 2026-07-19.
 
 ---
 
