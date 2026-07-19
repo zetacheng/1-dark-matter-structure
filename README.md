@@ -8,9 +8,16 @@ This repository contains one paper only. Material belonging to the other four pa
 
 ## Current status
 
-`INFRASTRUCTURE INITIALIZED`
+`SCIENTIFIC RECORD IMPORTED — GOVERNANCE ACTIVE`
 
-Historical scientific progress has not been inferred here and will be imported separately.
+The scientific record was imported from `zetacheng/yukawa-sparc-fits`
+(commit `fd3b2b6…`, byte-for-byte) on 2026-07-16 and registered against paper
+v16.3: SPARC data under `data/`, analysis scripts under `scripts/`, raw result
+CSVs under `results/<gate>/raw/`, a populated claim ledger (`CLAIMS.md`), gate
+registry (`GATES.md`), and a regression suite (`tests/`). Claims are recorded
+`SUPPORTED` (independently reproduced), **not** `VERIFIED` — no independent
+reviewer record exists in this repository yet. Migration provenance and the
+known artifact gaps are in `MIGRATION.md`.
 
 ## Role separation
 

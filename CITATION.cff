@@ -1,7 +1,20 @@
 cff-version: 1.2.0
-message: "Please cite this repository using the metadata below. Author and publication metadata will be imported with the historical paper record."
+message: "If you use this repository, please cite the associated Paper 1."
 type: software
-title: "Dark Matter Structure and Galaxy Phenomenology"
+title: "Dark Matter Structure and Galaxy Phenomenology (Paper 1): governance and reproducibility repository"
+abstract: >-
+  Governance, provenance, and regression-anchor repository for Paper 1,
+  "A Condensate-Motivated Yukawa Halo Kernel Confronts SPARC Rotation Curves:
+  Prior Fragility, an Emergent Acceleration Scale, and a Single-a0 Refit."
+  The scientific record was imported from zetacheng/yukawa-sparc-fits.
 authors:
-  - name: "NOT YET IMPORTED"
+  - name: "Zeta Hoi-Ho Cheng"
+    affiliation: "Independent Researcher, Ontario, Canada"
 repository-code: "https://github.com/zetacheng/1-dark-matter-structure"
+keywords:
+  - SPARC
+  - galaxy rotation curves
+  - dark matter halos
+  - radial acceleration relation
+version: "0.1.0"
+date-released: "2026-07-16"

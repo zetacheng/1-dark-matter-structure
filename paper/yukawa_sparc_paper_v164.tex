@@ -1,0 +1,1823 @@
+% ===================================================================
+% Paper 1, v16 (2026-07) [+ cross-review fixes]
+% cross-review (ChatGPT): abstract wording fixed -- 'dark-energy-scale
+% mechanism terminated by direct lattice measurement' (was ambiguous);
+% v16.4: topological-DM route (negative quartic + omega repulsion) WITHDRAWN
+%   as a live direction -- companion gate P5-OMEGA-01 ran and FAILED
+%   (cutoff-scale collapse, no continuum window at any coupling).
+% future directions (v16.3): new topological-DM route (negative quartic +
+% endogenous omega repulsion) registered as the live direction with
+% open gates.
+% v16: (a) DE narrative synced to companion v6.1 post-C2a: the a0
+% coincidence stated as between two observed numbers, owing nothing
+% to the framework; monopole sector's DE-generator candidacy noted as
+% terminated by direct measurement; joint falsifiability recorded as
+% cashed in the double-negative direction (abstract, sec:a0,
+% conclusions). (b) rc lower-boundary censoring check executed
+% (rc_floor.py, all 175): 16/26 of the [2,5) bin migrate below 2 kpc
+% on an extended grid (8 to the new wall at 0.13 kpc, preferring no
+% scale at all); 10th pct 2.0 -> 0.16 kpc, span [0.13, 734] kpc;
+% non-universality strengthened; new robustness subsection; table
+% footnote and fig. 2 caption updated; censoring caveat attached to
+% small-rc statements.
+% v15: data gates G1+G2 executed (repo branch gates-g1-g2, scripts
+% a0_profile_likelihood.py / heldout_validation.py). (1) profiled a0
+% with continuous nuisance polish: 0.95 [0.920,0.979]e-10; grid-MAP
+% staircase noise (~+-10 units vs Delta=1) identified as the defect
+% of the withdrawn slice -- which it INFLATED (v14's 'biased narrow'
+% direction corrected); (2) formal stat interval (+-0.03) vs 5-fold
+% empirical spread (+-0.10) discrepancy reported as galaxy-level
+% heterogeneity; (3) held-out 5-fold: RAR beats refitted Yukawa
+% out of sample by Delta(-2lnL) = -4207 despite kernel test-time
+% freedom; NFW comparison framed by the freedom asymmetry; split-half
+% instability reported as a sample-size requirement; (4) abstract
+% numbers synced; completed gates removed from future list.
+% v14: MAGI round (ChatGPT) + executed gates. (1) L0 -> schematic
+% channel-dependent action, no complete-basis universal G claim;
+% (2) sec:micro framed as the hypothesis being tested and falsified;
+% (3) parity/mixing two-sided: parity-preserving -> exactly zero,
+% optimistic admixture -> 1e-122; (4) C2d executed and reported:
+% monopole gradient response = exact sine-Gordon staircase -- correct
+% crossover scale, wrong exponent (X^1/2 vs X^3/2), no source; the
+% emergent-MOND reading fails at leading order; a0 relation labelled
+% an unexplained structural coincidence; (5) M-gates recorded:
+% monotone environment triggers closed (5 kills); non-monotonic
+% baryon-window (shell/torus) response registered untested (W1-W5);
+% (6) m_sigma phrased as tied to m_dyn (>> kpc^-1 at the operating
+% point), not unconditionally 'cutoff scale'; (7) halo subsection
+% retitled as squared-profile ansatz; (8) abstract rewritten to the
+% four-step arc and trimmed; (9) data gates registered: fully
+% profiled a0, held-out prediction, outer-cutoff discriminant.
+% v13: (a) theory narrative synced to the mediator audit and
+% topological funnel of the companion dark-energy paper (v5.8):
+% parity/no-go recorded at eq. muc-origin (eps ~ 1e-122 now
+% load-bearing), P(X) pairing route reported as executed-and-closed
+% (two-body theorem), K(X) address moved to the monopole-gas gradient
+% response (pre-registered, kill criterion); (b) a0 stat error bar
+% +0.12/-0.01 withdrawn -- the Delta(-2lnL)=1 slice is conditioned on
+% best-fit f_int and grid-quantized (both bias narrow); systematic
+% band (0.96-1.28) quoted as dominant; (c) ac-test arithmetic
+% corrected: rc-Vmax slope is sample-unstable (0.51/0.82/1.39), the
+% cherry-picked 0.82->1.18 line removed, instability itself reported
+% as a failure mode; robust statement: a_c tracks Vmax; (d) hard
+% fixes: duplicate bibitem, stale mu in [0,10], undefined s, NFW
+% slope description (equal parameter count), cH0/2pi attribution
+% with full-M_Pl convention, (G M_B / R_B c^2) dimension, orphan
+% configuration-selection paragraph headed, roadmap completed,
+% AIC rounding harmonized, order-of-magnitude wording corrected.
+% v12: single-a0 refit performed and reported (Sec. refit): RAR-type
+% acceleration-dependent kernel, per-galaxy mu/D/i nuisances (Table 1),
+% global intrinsic-scatter likelihood (no error floor). a0 = 0.96e-10
+% (0.96-1.28 across error models); Yukawa decisively inferior (+4859);
+% NFW retains a moderate edge (-1614), honest dual-statement reported.
+% Repo: scripts rar_refit.py, nuisance_comparison.py,
+% intrinsic_scatter_comparison.py (all validation-gated).
+% v11 (reframe): M/L-prior robustness completed -- the finite-r_c
+% population collapses under a physical stellar normalization
+% (58% -> 7% lognormal / 2% mu=1 fixed); free-mu results relabeled
+% as kernel-shape diagnostics; dAIC definition stated (same-config);
+% mu range corrected (mu >= 0, unbounded); microscopic-status
+% paragraph added (companion m_sigma measurement places the scalar
+% at the cutoff scale -> angular Goldstone / K(X) route); title
+% updated accordingly. Companions: Paper 2 v2.14, Paper 3 v3.10,
+% Paper 4 v5.5, Paper 5 v0.19.
+% ===================================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{geometry}
+\usepackage{physics}
+\usepackage{slashed}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage[numbers]{natbib}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{xcolor}
+
+\geometry{margin=1in}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+
+\title{\textbf{A Condensate-Motivated Yukawa Halo Kernel Confronts \\
+SPARC Rotation Curves: Prior Fragility, an Emergent \\
+Acceleration Scale, and a Single-$a_0$ Refit}}
+
+\author{Zeta Hoi-Ho Cheng \\
+\textit{Independent Researcher, Ontario, Canada}}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+We subject a microscopically motivated dark-halo hypothesis---a
+fixed-range Yukawa kernel, $V_{\rm halo}^2 = B(1-e^{-2mr})/r$, from
+a lattice fermion condensate---to rotation-curve tests across all
+175 SPARC galaxies.
+Free fits appear acceptable ($\chi^2/\mathrm{pt} = 1.08$), but
+three failure modes converge on one diagnosis: the
+per-galaxy range spans 1.4 decades and trends with velocity; the
+characteristic acceleration $a_c = V^2(r_c)/r_c$ tracks $V_{\max}$
+(slope $1.09\pm0.17$) instead of clustering at a constant; and under
+physical mass-to-light priors the finite-$r_c$ population collapses
+from 58\% to 7\%.  The kernel's functional form fails: fixed length where the data
+demand acceleration dependence.
+The refit this diagnosis demands---an acceleration-dependent
+kernel, single global $a_0$, nuisance priors, and a global
+intrinsic-scatter likelihood---yields
+$a_0 = 0.95\pm0.03\,(\mathrm{stat})\times10^{-10}$~m~s$^{-2}$,
+error-model systematics dominating (up to $1.28$): one global
+parameter beats the $2\times175$-parameter Yukawa kernel by
+$\Delta\mathrm{AIC} = +4859$ in sample and by $-4207$ on held-out
+galaxies, where the kernel refits per galaxy and $a_0$ is frozen.
+NFW retains a moderate total-AIC advantage ($-1614$), an honest
+residual.
+The scale relation
+$a_0 \sim \Lambda_{\rm DE}^2/M_{\rm Pl} \sim cH_0/2\pi$ relates two
+\emph{observed} numbers and owes nothing to the framework; the
+framework's own mechanisms for both sides are computed and closed:
+the galactic response at leading order (pairing, loops, and the
+monopole gradient response---right crossover scale, wrong exponent,
+no source), and the dark-energy-scale mechanism terminated by direct lattice
+measurement in the companion paper.  Joint falsifiability was cashed in the double-negative direction;
+the coincidence outlives both mechanisms, and the falsification
+chain, single-$a_0$ measurement, and NFW residual are the data-side
+record.
+\end{abstract}
+
+
+% ===================================================================
+\section{Introduction}
+\label{sec:intro}
+% ===================================================================
+
+The rotation curves of spiral galaxies provide one of the most direct
+probes of the distribution of matter on galactic scales.
+The Spitzer Photometry and Accurate Rotation Curves (SPARC) database
+\cite{Lelli:2016zqa} compiles high-quality rotation curves for 175
+disk galaxies with near-infrared photometry, enabling systematic
+studies of the mass discrepancy problem and the radial acceleration
+relation \cite{Lelli:2017vgz,McGaugh:2016leg}.
+
+Within the cold dark matter (CDM) paradigm, the standard approach
+models dark matter halos using empirically motivated density profiles.
+The Navarro--Frenk--White (NFW) profile \cite{Navarro:1996gj},
+derived from $N$-body simulations, remains the default baseline,
+though it faces well-known challenges including the cusp--core
+problem in low-mass galaxies \cite{deBlok:2009sp,Bullock:2017xww}
+and the diversity problem \cite{Oman:2015xda}.
+Comprehensive halo model comparisons using the SPARC sample have
+been performed by \cite{Li:2020iib}.
+
+Several theoretical programmes seek to derive gravitational and
+dark-sector phenomena from underlying microscopic degrees of freedom.
+The induced gravity programme, initiated by \cite{Sakharov:1967pk}
+and developed extensively in the condensed matter analogy by
+\cite{Volovik:2003fe}, demonstrates that gravitational dynamics can
+emerge as collective effects of quantum fields.
+Analogue gravity models \cite{Barcelo:2005fc} provide concrete
+laboratory realizations of emergent spacetime concepts.
+Verlinde's entropic gravity \cite{Verlinde:2016toy} offers an
+alternative thermodynamic derivation.
+Within particle physics, Nambu--Jona-Lasinio (NJL) models
+\cite{Nambu:1961tp,Nambu:1961fr} and their extensions
+\cite{Klevansky:1992qe} provide a well-studied framework for
+dynamical symmetry breaking and collective boson emergence via
+Hubbard--Stratonovich (HS) linearization
+\cite{Hubbard:1959ub,Stratonovich:1957}.
+
+Yukawa-type corrections to the Newtonian gravitational potential
+have been studied extensively as phenomenological probes of modified
+gravity.
+\cite{deAlmeida:2018kwq} fitted a Yukawa fifth force to 40 SPARC
+galaxies, finding improved $\chi^2$ and a best-fit range
+$\lambda = 5.61 \pm 0.91$~kpc.
+\cite{Henrichs:2021bnd} tested Yukawa gravity using the Milky Way
+rotation curve with Bayesian model selection.
+More recently, \cite{Hassan:2025yuk} extended the analysis to
+include all galactic components with Yukawa corrections.
+In all these studies, the Yukawa potential is introduced as an
+ad hoc phenomenological modification to gravity---a ``fifth force''
+with free coupling and range parameters.
+
+The present work differs fundamentally in that the Yukawa halo
+profile is not postulated but \emph{derived} from a specific
+microscopic construction: a lattice fermion model with four-fermion
+interactions, where the scalar Hubbard--Stratonovich channel
+naturally produces a massive scalar field with Yukawa-type coupling
+to matter.
+The halo amplitude $B$ and stellar mass-to-light rescaling $\mu$
+remain phenomenological parameters at the galactic level, but the
+\emph{functional form} of the halo profile has a structural origin.
+
+Fuzzy dark matter (FDM) models
+\cite{Hu:2000ke,Hui:2016ltb,Schive:2014dra}
+employ ultralight scalar fields ($m \sim 10^{-22}$~eV) to produce
+halo cores through quantum pressure.
+Modified gravity approaches such as MOND
+\cite{Milgrom:1983ca,Famaey:2011kh}
+and its relativistic extensions \cite{Bekenstein:2004ne}
+address the mass discrepancy through modifications of gravitational
+dynamics.
+
+This paper focuses exclusively on the scalar dark matter channel
+and its galactic phenomenology.
+Questions of emergent gravity (tensor channel), dark energy (vector
+channel), and gauge interactions are deferred to future work.
+
+The paper is organized as follows.
+Section~\ref{sec:micro} derives the scalar halo profile from the
+microscopic framework.
+Section~\ref{sec:method} describes the fitting methodology.
+Section~\ref{sec:results} presents results.
+Section~\ref{sec:nfw} compares with NFW.
+Section~\ref{sec:robust} discusses robustness.
+Section~\ref{sec:discuss} provides discussion.
+Section~\ref{sec:refit} performs the single-acceleration-scale
+refit that the diagnosis demands, and
+Section~\ref{sec:conclusions} concludes.
+
+
+% ===================================================================
+\section{Microscopic Framework and Emergent Scalar Profile}
+\label{sec:micro}
+% ===================================================================
+
+\emph{Status of this section.}  We formulate here, in full, the
+fixed-range scalar realization that motivated the original kernel.
+The lattice and symmetry audits reported later in this paper and in
+the companion papers show that this realization cannot provide the
+required galactic mediator; it is retained as the microscopic
+hypothesis being tested---and, by the end of this paper,
+falsified---rather than as a construction the programme still
+defends.
+
+\subsection{Lattice fermion substrate}
+
+We consider a discrete lattice of fermionic degrees of freedom at a
+characteristic spacing $a \simeq \ell_{\mathrm{Pl}}$, governed by a
+four-fermion interaction of the NJL type:
+\begin{equation}
+\mathcal{L}_0 = \bar{\psi}(i\slashed{\partial})\psi
++ \sum_A \frac{G_A}{2N}(\bar{\psi}\Gamma_A\psi)^2,
+\label{eq:L0}
+\end{equation}
+where $\Gamma_A$ labels Dirac--flavor channels with
+channel-dependent couplings $G_A$ and $N$ is the number of fermion
+species.  The symmetry-selected condensate sector actually adopted
+is specified in the companion papers; no equality among
+Dirac-channel couplings is assumed here, and the present paper uses
+only the scalar projection.
+
+The vacuum is characterized by a fermion condensate that gaps the
+microscopic substrate at the lattice scale, so that no
+single-fermion excitations are observable at low energies; the
+physical low-energy degrees of freedom are collective condensate
+modes.
+The light mode relevant for the present work is the phase (angular)
+fluctuation of the complex condensate, whose small mass is
+protected by an approximate $U(1)$ symmetry broken only by the
+discrete lattice structure.
+The dynamical analysis of the vacuum and the gravitational sector
+is developed in a separate publication.
+For the galactic-scale phenomenology developed in this paper,
+the only input required from the microscopic sector is the
+hypothesized existence of a massive scalar collective mode with a Yukawa-type
+coupling to matter; the results below do not depend on the
+details of the vacuum construction.
+
+\subsection{Hubbard--Stratonovich scalar channel}
+
+The scalar component of the four-fermion interaction is linearized
+by introducing an auxiliary field $\chi$:
+\begin{equation}
+\mathcal{L}_{\mathrm{HS}}^{(S)} =
+\bar{\psi}(i\slashed{\partial})\psi
++ g\chi\,\bar{\psi}\psi
+- \frac{\chi^2}{2G_S},
+\label{eq:HS}
+\end{equation}
+where $G_S$ is the scalar-channel coupling and $g$ is the Yukawa
+coupling.
+
+Integrating out the fermion fields at one loop in the large-$N$
+limit generates the effective potential:
+\begin{equation}
+V_{\mathrm{eff}}(\chi) = \frac{\chi^2}{2G_S}
+- N \int \frac{d^4 p}{(2\pi)^4}\,
+\ln\!\left(p^2 + g^2\chi^2\right).
+\label{eq:Veff}
+\end{equation}
+
+The condensate $\bar{\chi}$ is determined by the stationarity
+condition $\partial V_{\mathrm{eff}}/\partial\chi = 0$, which
+yields the gap equation
+\begin{equation}
+\frac{1}{G_S} = 2Ng^2 \int \frac{d^4 p}{(2\pi)^4}\,
+\frac{1}{p^2 + g^2\bar{\chi}^2},
+\label{eq:gap}
+\end{equation}
+with the (Euclidean) momentum integral regulated at the lattice
+cutoff $\Lambda \sim 1/a$.
+The curvature of the effective potential at the minimum,
+$\partial^2 V_{\mathrm{eff}}/\partial\chi^2\big|_{\chi=\bar{\chi}}$,
+sets the mass of the heavy radial (amplitude) mode.
+The light mode relevant for halo phenomenology is the angular
+(phase) fluctuation of the complex condensate, whose mass
+$m_\chi$ is protected by the approximate phase symmetry of the
+substrate and is treated as an effective parameter in this work.
+
+\subsection{Nonlinear scalar equation}
+
+The condensate $\chi$ satisfies the static field equation
+\begin{equation}
+-\nabla^2 \chi + m_\chi^2\,\chi + 4\lambda\,\chi^3 = \mu_c\,J_B,
+\label{eq:scalar-field}
+\end{equation}
+where $\lambda$ parameterizes the quartic self-interaction and
+$J_B$ is the baryonic source density; here $\chi$ denotes the light
+(angular) collective mode, with mass $m_\chi$.  The monopole
+coupling $\mu_c$ to baryons is treated as an effective parameter,
+but its microscopic origin can be made explicit.  A pure phase
+(Goldstone) mode couples only \emph{derivatively}, through
+$(\partial_\mu\theta/f)\,J^\mu$, and is therefore not sourced by a
+static baryon density.  The monopole coupling arises precisely
+because the chiral $U(1)$ is \emph{explicitly broken}: the same
+subleading breaking $\varepsilon$ that lifts the flat direction and
+gives the pseudo-Goldstone its mass, $m_\chi^2 \sim \varepsilon
+\Lambda^2$, also mixes the angular mode with the heavy radial
+amplitude, which \emph{does} carry the tree-level monopole vertex
+$g\chi\bar\psi\psi$.  Seen through this small mixing angle
+$\sim\varepsilon$, the angular mode inherits a suppressed
+non-derivative coupling,
+\begin{equation}
+\mu_c \;\sim\; \varepsilon\,g \;\sim\; \frac{m_\chi^2}{\Lambda^2}\,g ,
+\label{eq:muc-origin}
+\end{equation}
+so that the halo source strength and the field mass share a single
+origin in the explicit breaking; $\mu_c$ is not an independent vertex
+but the radial monopole coupling viewed through the
+breaking-induced mixing.  A first-principles evaluation of
+$\varepsilon$ on the lattice substrate is developed in the companion
+paper on the gravitational sector; for the galactic-scale fits below,
+$\mu_c$ enters only through the effective halo normalization $B$.
+Eq.~\eqref{eq:muc-origin} carries a falsifiable consequence---a
+correlation between the halo amplitude and the field mass---that a
+future joint analysis of the two could test.
+We record its status with both branches closed.  In a
+parity-preserving realization the scalar--pseudoscalar mixing---and
+with it the linear coupling---vanishes identically.  Even allowing
+the most optimistic parity-violating admixture, its natural size is
+bounded by $\varepsilon \sim m_\chi^2/\Lambda^2 \sim 10^{-122}$,
+irrelevant for galactic dynamics.  This two-sided failure is a
+fourth, independent argument against the literal fixed-range
+reading---anticipating the verdict of the fits below---and is
+developed into a general no-go for every loop-level coupling route
+in the companion dark-energy paper.
+
+\subsection{Linearized solution}
+
+In the linearized regime ($\lambda \to 0$) with a spherically
+symmetric, localized source $J_B(r)$, the static Green's function
+of Eq.~\eqref{eq:scalar-field} gives the Yukawa-type solution:
+\begin{equation}
+\chi(r) = \frac{\mu_c}{4\pi}\int d^3r'\,
+\frac{e^{-m_\chi|\mathbf{r}-\mathbf{r}'|}}{|\mathbf{r}-\mathbf{r}'|}
+\,J_B(r').
+\label{eq:yukawa-sol}
+\end{equation}
+
+For a point source $J_B = M_B\,\delta^3(\mathbf{r})$, this reduces to
+\begin{equation}
+\chi(r) = \frac{\mu_c M_B}{4\pi}\,\frac{e^{-m_\chi r}}{r}.
+\label{eq:yukawa-point}
+\end{equation}
+
+The point-source solution motivates the radial form of the halo
+kernel used in the fitting analysis below.
+A fully baryon-resolved derivation using the spatially extended
+source distribution $J_B(r)$ from the observed gas and stellar
+profiles is left for future work.
+Such a calculation would relate the halo amplitude directly to
+the baryonic mass, potentially eliminating $B$ as a free parameter.
+
+The Yukawa length scale $r_c = 1/m_\chi$ is motivated by the
+scalar mass arising from the effective
+potential~\eqref{eq:Veff} and gap equation~\eqref{eq:gap}.
+In a complete microscopic theory, $m_\chi$ would be a universal
+constant determined by the lattice parameters.
+In the present phenomenological analysis, $m$ is treated as an
+effective galactic-scale parameter: it is microscopically motivated
+but not yet predicted from first principles.
+Whether the data support a single universal $m$ or require
+galaxy-dependent values is tested quantitatively in
+Section~\ref{sec:universal-m}.
+
+\subsection{Squared-profile halo ansatz and circular-velocity kernel}
+
+The scalar condensate carries an energy density whose leading
+contribution in the mass-dominated regime is
+$\rho_\chi \propto m_\chi^2 |\chi|^2$.
+This approximation neglects the gradient term
+$(\nabla\chi)^2$, which can be comparable to $m^2\chi^2$
+at small radii.
+Equation~\eqref{eq:rho-halo} below should therefore be understood
+as a leading scaling ansatz---a phenomenological kernel motivated
+by the squared Yukawa profile, not a derivation from the full
+$T^{00}$;
+a derivation from the full energy-momentum tensor $T^{00}$
+of the scalar field, with all terms retained, is deferred to
+future work.
+We note that the singular small-radius behavior of both the
+field profile and its energy density is an artifact of the
+point-source idealization: for a spatially extended baryonic
+source, the convolution in Eq.~\eqref{eq:yukawa-sol} regularizes
+the profile at radii below the source scale, which provides
+further motivation for the extended-source treatment.
+For the Yukawa solution~\eqref{eq:yukawa-point}, this gives
+\begin{equation}
+\rho_\chi(r) \propto
+\frac{e^{-2m_\chi r}}{r^2}.
+\label{eq:rho-halo}
+\end{equation}
+
+The enclosed halo mass within radius $r$ is
+\begin{equation}
+M_\chi(<r) = 4\pi\int_0^r \rho_\chi(r')\,r'^2\,dr'
+\propto \int_0^r e^{-2m_\chi r'}\,dr'
+= \frac{1 - e^{-2m_\chi r}}{2m_\chi}.
+\label{eq:M-enclosed}
+\end{equation}
+
+The halo contribution to the circular velocity follows from
+$V_{\mathrm{halo}}^2 = GM_\chi(<r)/r$:
+\begin{equation}
+V_{\mathrm{halo}}^2(r) = B\,X_h(r),
+\qquad
+X_h(r) \equiv \frac{1 - e^{-2m r}}{r},
+\label{eq:Vhalo}
+\end{equation}
+where $m \equiv m_\chi$ and $B$ is a phenomenological amplitude
+absorbing the coupling constants and total halo mass scale.
+The microscopic construction motivates the halo kernel $X_h$ and
+its characteristic length scale $r_c = 1/m$, while the overall
+amplitude $B$ is treated as a free parameter at galactic scales.
+Future work deriving $B$ from the gap equation and baryon--condensate
+coupling would provide a fully predictive model.
+
+The kernel $X_h(r)$ has two limits:
+\begin{itemize}
+\item $r \ll r_c \equiv 1/m$:\;
+  $X_h \approx 2m$, so that
+  $V_{\mathrm{halo}}^2 \to 2mB = \mathrm{const}$
+  (an approximately constant velocity plateau in the inner region),
+\item $r \gg r_c$:\;
+  $X_h \approx 1/r$ (Keplerian decline).
+\end{itemize}
+
+Note that while $V_{\mathrm{halo}}^2$ approaches a constant at
+small $r$, the underlying density profile~\eqref{eq:rho-halo}
+scales as $r^{-2}$ and does not possess a finite central density.
+The inner velocity plateau is therefore a kinematic feature of the
+enclosed mass profile rather than a density core in the usual sense.
+
+\emph{Status of the mass scale.}  The identification of the
+scalar-channel composite with a kpc-range field requires
+$m_\chi \sim 10^{-26}$~eV, more than fifty orders of magnitude below the
+substrate cutoff.  A companion lattice measurement of the
+scalar-channel pole in the same framework finds instead
+$m_\sigma \simeq 0.83 \times 2m_{\rm dyn}$, i.e.\ a composite at the
+cutoff scale, with the ratio approaching the continuum
+Nambu--Jona-Lasinio value $m_\sigma = 2m_{\rm dyn}$ in the chiral
+limit.  The construction of this section is therefore retained as
+motivation for the \emph{form} of the kernel $X_h$, not as a derivation
+of its scale; the microscopic status of the mediator, and the
+framework's actual light degree of freedom, are taken up in
+Section~\ref{sec:a0}.
+
+
+% ===================================================================
+\section{Fitting Methodology}
+\label{sec:method}
+% ===================================================================
+
+\subsection{Data}
+
+We use the mass model data of \cite{Lelli:2016zqa}, providing
+$V_{\mathrm{obs}}$, $\delta V$, $V_{\mathrm{gas}}$,
+$V_{\mathrm{disk}}$, and $V_{\mathrm{bul}}$ for 175 galaxies.
+
+\subsection{Rotation curve model}
+
+\begin{equation}
+V_{\mathrm{model}}^2(r) = V_{\mathrm{gas}}^2
++ \mu\,(V_{\mathrm{disk}}^2 + V_{\mathrm{bul}}^2)
++ B\,X_h(r),
+\label{eq:Vmodel}
+\end{equation}
+where $\mu = \Upsilon_*/\Upsilon_{*,\mathrm{fid}}$ rescales the
+stellar mass-to-light ratio.
+
+\subsection{Two-stage fitting procedure}
+
+\textbf{Stage 1: Parameter estimation in $V^2$ space.}
+For fixed $m$, the parameters $(\mu, B)$ are obtained by weighted
+least squares applied to
+$V_{\mathrm{obs}}^2 - V_{\mathrm{gas}}^2 = \mu\,S_*(r) + B\,X_h(r)$,
+with weights $w_i = 1/\sigma_{V,i}^2$ and
+$\sigma_{V,i} = \max(\delta V_i, \sigma_f)$.
+This approach exploits the $V^2$-linearity of the model and is
+standard in the SPARC literature
+\cite{Lelli:2016zqa,Li:2020iib,Lelli:2017vgz}.
+
+\textbf{Stage 2: Model evaluation in $V$ space.}
+Fit quality is assessed via
+$\chi^2 = \sum_i [(V_{\mathrm{obs},i} - V_{\mathrm{model},i})/\sigma_{V,i}]^2$
+and the full Gaussian log-likelihood including the $\log\sigma$ term.
+Model comparison uses AIC with dynamic effective parameter count.
+
+\textbf{Parameter ranges.}
+The stellar rescaling is restricted to $\mu \geq 0$ (unbounded
+above) and the halo amplitude to $B \geq 0$; the weighted
+least-squares solution is projected onto these bounds, and
+solutions at a boundary are reported as such.
+In practice only two galaxies fit with $\mu > 10$ (F565-V2 at
+$\mu = 13$ and UGCA444 at $\mu = 77$, the latter a poor fit);
+all aggregate statistics are medians and are insensitive to them.
+The unbounded range on $\mu$ is deliberately uninformative, so that
+the analysis tests the halo kernel shape without imposing a
+stellar-population prior; the consequences of this choice for
+the $\mu$ distribution are discussed in
+Section~\ref{sec:results}, and its decisive consequences for the
+finite-$r_c$ population in Section~\ref{sec:ml-prior}.
+
+\textbf{Configuration.}
+The scalar mass $m$ is scanned over $[0.00125, 0.5]$~kpc$^{-1}$
+($r_c \in [2, 800]$~kpc), with 140 log-spaced points.
+For each galaxy, nine configurations of inner-radius mask
+($r_{\min} \in \{0, 2, 3\}$~kpc) and error floor
+($\sigma_f \in \{3, 4, 6\}$~km/s) are explored; the best
+configuration is selected by AIC.
+This systematic exploration accommodates the varying data quality
+and radial coverage across the heterogeneous SPARC sample.
+Since the number of configurations is small (nine) and fixed
+across all galaxies, the effective trial factor is modest;
+the robustness analysis in Section~\ref{sec:robust} confirms
+that core findings are stable under fixed-configuration fitting.
+
+\textbf{Boundary handling.}
+When $m$ hits the lower grid edge, a 90\% CL lower limit on $r_c$
+is reported via profile likelihood
+($\Delta(-2\ln\mathcal{L}) = 2.71$).
+
+
+% ===================================================================
+\section{Results}
+\label{sec:results}
+% ===================================================================
+
+\subsection{Overview}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lc}
+\toprule
+Quantity & Value \\
+\midrule
+Total galaxies fitted & 175 \\
+Finite $r_c$ & 101 (58\%) \\
+Boundary $r_c$ & 74 (42\%) \\
+Median $r_c$ (finite) & 15.8~kpc \\
+10--90th percentile $r_c$ & 2.0--185~kpc$^{\dagger}$ \\
+Median $\chi^2/\mathrm{pt}$ & 1.08 \\
+\multicolumn{2}{l}{\footnotesize $^{\dagger}$lower edge grid-censored;
+extended-grid 10th pct $= 0.16$~kpc (Sec.~\ref{sec:robust})} \\
+$\chi^2/\mathrm{pt} < 1$ & 81 (46\%) \\
+\midrule
+Median $\mu$ & 0.095 \\
+IQR of $\mu$ & 0.00--1.25 \\
+$\mu = 0$ (boundary) & 81 (46\%) \\
+\bottomrule
+\end{tabular}
+\caption{Summary of Yukawa halo fits to 175 SPARC galaxies.
+The high fraction of $\mu = 0$ solutions indicates that many
+galaxies are well-fitted with negligible stellar contribution
+to the rotation curve, a feature also observed in other halo
+model analyses of the SPARC sample \cite{Li:2020iib}.}
+\label{tab:overview}
+\end{table}
+
+The prevalence of $\mu = 0$ solutions deserves comment.
+The inner velocity plateau of the Yukawa kernel
+($V_{\mathrm{halo}}^2 \to 2mB$ as $r \to 0$;
+Section~\ref{sec:micro}) is partially degenerate with the stellar
+contribution over the limited radial range of many rotation
+curves, so that an uninformative prior on $\mu$ allows the halo
+component to absorb part of the stellar signal.
+Similar $\Upsilon_*$ boundary behavior is observed in
+unconstrained halo fits to SPARC
+\cite{Li:2020iib}, and is conventionally addressed by imposing
+a lognormal population prior on $\Upsilon_*$.
+The fits reported here should therefore be read as a test of the
+halo kernel \emph{shape} under maximally agnostic stellar
+masses; an analysis with an informative $\Upsilon_*$ prior is an
+important consistency check and is addressed in
+Section~\ref{sec:robust}.
+
+\subsection{Cutoff radius distribution}
+
+The results of this and the following subsections characterize the
+free-$\mu$ analysis; their prior sensitivity is quantified in
+Section~\ref{sec:ml-prior}.
+Among the 101 galaxies with finite $r_c$, the distribution
+is broad but shows structure:
+
+\begin{center}
+\begin{tabular}{cc}
+\toprule
+$r_c$ range (kpc) & Count \\
+\midrule
+$[0, 5)$ & 26 \\
+$[5, 10)$ & 15 \\
+$[10, 20)$ & 11 \\
+$[20, 30)$ & 8 \\
+$[30, 50)$ & 7 \\
+$[50, 100)$ & 13 \\
+$[100, 200)$ & 11 \\
+$[200, 800)$ & 10 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The emergent scalar mass $m_\chi \sim 0.06$~kpc$^{-1}$ at the
+median lies in the ultralight range ($m_\chi \sim 10^{-27}$~eV).
+This is significantly below the canonical fuzzy dark matter mass
+scale $m_{\mathrm{FDM}} \sim 10^{-22}$~eV
+\cite{Hu:2000ke,Hui:2016ltb}, indicating that the emergent scalar
+field occupies a distinct region of ultralight parameter space.
+We emphasize that the standard fuzzy-dark-matter constraints from
+small-scale structure---most notably the Lyman-$\alpha$ forest,
+which bounds the mass of a \emph{relic} wave-dark-matter
+component---do not apply directly here.  In the present framework
+the halo is a static field \emph{sourced by baryons}
+(Eq.~\ref{eq:scalar-field}) rather than a virialized relic of an
+independent condensate, so $m_\chi$ sets a per-galaxy length scale
+rather than a free-streaming or de~Broglie scale.  As we argue in
+Section~\ref{sec:a0}, the variation of this length across galaxies
+is itself best read as reflecting an underlying acceleration scale
+rather than a fixed field mass---though, as the direct test of
+Section~\ref{sec:ac-test} shows, $r_c$ marks where the fixed-range
+kernel saturates against the baryon distribution, not where the
+acceleration crosses $a_0$.
+
+\subsection{Test of a universal scalar mass}
+\label{sec:universal-m}
+
+If the scalar mass $m_\chi$ is a fundamental microscopic constant,
+all galaxies should be well-described by a single value of $m$.
+We test this by fitting all 175 galaxies with $m$ fixed at a
+common value, optimizing only $(\mu, B)$ per galaxy.
+
+The best universal value is $m \approx 0.005$~kpc$^{-1}$
+($r_c \approx 200$~kpc), which yields a median
+$\chi^2/\mathrm{pt} = 1.31$---a 22\% degradation relative to
+the per-galaxy fit (1.08).
+At this universal $m$, 62\% of galaxies achieve
+$\chi^2/\mathrm{pt} < 2$.
+In contrast, fixing $m$ at the per-galaxy median value of
+$0.063$~kpc$^{-1}$ ($r_c = 15.8$~kpc) produces a median
+$\chi^2/\mathrm{pt} = 4.35$, indicating that a ``typical'' $m$
+does not adequately describe the majority of the sample.
+
+The per-galaxy best-fit $m$ values span approximately 1.4~decades
+(standard deviation 0.72~dex in $\log_{10}m$), confirming that
+the data do not support a single universal scalar mass within the
+present linearized, point-source framework.
+
+This finding admits three interpretations that are not mutually
+exclusive:
+\begin{enumerate}
+\item The effective scalar mass may be environment-dependent,
+  varying with local halo density, baryonic concentration,
+  or formation history. Such dependence could arise from the
+  nonlinear $\chi^3$ term in Eq.~\eqref{eq:scalar-field},
+  which shifts the effective mass in regions of high condensate
+  amplitude.
+\item The linearized point-source approximation
+  (Eq.~\ref{eq:yukawa-point}) may be insufficient: the full
+  solution of the nonlinear field equation with spatially
+  extended baryonic sources could produce an effectively
+  variable cutoff scale even with a single microscopic $m_\chi$.
+\item Most pointedly, the spread in $m$ is not random but trends
+  with the galaxy's characteristic velocity
+  (Section~\ref{sec:subsample}): the data select a length that
+  \emph{scales with the system}, as expected if the governing
+  physics is a universal \emph{acceleration} scale rather than a
+  universal length.  A direct test of the strongest form of this
+  reading---that the per-galaxy $r_c$ marks the radius at which the
+  local acceleration crosses a fixed threshold $a_0$---is performed
+  in Section~\ref{sec:ac-test} and \emph{fails}: the characteristic
+  accelerations at $r_c$ are not universal.  The acceleration-scale
+  interpretation survives only at the pointwise level, with the
+  Yukawa $r_c$ an artifact of forcing a fixed-range kernel onto an
+  acceleration-dependent response.  We develop this distinction,
+  and its origin in the framework's dark-energy sector, in
+  Sections~\ref{sec:a0} and~\ref{sec:ac-test}.
+\end{enumerate}
+
+Distinguishing these scenarios requires either a nonlinear
+numerical solution of Eq.~\eqref{eq:scalar-field} with realistic
+source profiles, or a hierarchical Bayesian analysis testing
+a narrow distribution of $m$ values.
+Both are left for future work.
+We note that this test, like all of Section~\ref{sec:results}, is
+performed within the free-$\mu$ analysis; under the physical
+stellar prior of Section~\ref{sec:ml-prior} the finite-$r_c$
+population itself largely vanishes, which supersedes rather than
+rescues the universal-mass hypothesis---no single $m$ describes
+the sample in either treatment.
+
+% --- Figures ---
+\begin{figure*}[ht]
+\centering
+\includegraphics[width=\textwidth]{fig1_rotation_curves.pdf}
+\caption{Representative Yukawa halo fits to four SPARC galaxies.
+\textit{Top left}: NGC2998, a massive spiral with finite
+$r_c = 219.5$~kpc and Yukawa preferred over NFW
+($\Delta\mathrm{AIC} = -2.2$).
+\textit{Top right}: NGC4138, with well-constrained
+$r_c = 11.2$~kpc.
+\textit{Bottom left}: DDO154, a dwarf galaxy classified as a
+boundary case ($r_c \geq 800$~kpc).
+\textit{Bottom right}: NGC6503, a boundary case with excellent
+fit quality ($\chi^2/\mathrm{pt} = 0.18$).
+In each panel, black points with error bars show observed
+velocities, the red curve is the total model, the green dashed
+curve is the Yukawa halo contribution, and the shaded regions
+show gas (cyan) and stellar (blue) components.}
+\label{fig:fits}
+\end{figure*}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\columnwidth]{fig2_rc_distribution.pdf}
+\caption{Distribution of finite cutoff radii $r_c = 1/m$ for
+the 101 galaxies with well-constrained fits.
+The red dashed line marks the median $r_c = 15.8$~kpc.
+The distribution is broad; the apparent pile-up at the 2~kpc grid
+edge is partly censoring---on an extended grid 16 of the 26
+galaxies in $[2,5)$~kpc migrate below 2~kpc
+(Section~\ref{sec:robust}), widening the span to
+$[0.13, 734]$~kpc.}
+\label{fig:rc-dist}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\columnwidth]{fig3_dAIC_distribution.pdf}
+\caption{Distribution of $\Delta\mathrm{AIC} =
+\mathrm{AIC}_{\mathrm{Yukawa}} - \mathrm{AIC}_{\mathrm{NFW}}$
+for all 175 galaxies.
+Negative values indicate Yukawa preference; positive values
+indicate NFW preference.
+The red dashed line marks the median $\Delta\mathrm{AIC} = +6.6$.
+The green dotted lines mark $\pm 2$, the conventional threshold
+for meaningful model distinction.}
+\label{fig:daic}
+\end{figure}
+
+
+% ===================================================================
+\section{Comparison with the NFW Profile}
+\label{sec:nfw}
+% ===================================================================
+
+\subsection{NFW fitting}
+
+The NFW profile is fitted to all 175 galaxies using identical
+methodology, with $r_s$ scanned over $[0.5, 200]$~kpc (80 points).
+
+\subsection{Overall comparison}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcc}
+\toprule
+Category & Count & Fraction \\
+\midrule
+Yukawa preferred ($\Delta\mathrm{AIC} < -2$) & 10 & 6\% \\
+Comparable ($|\Delta\mathrm{AIC}| \leq 2$) & 48 & 27\% \\
+NFW preferred ($\Delta\mathrm{AIC} > 2$) & 117 & 67\% \\
+\midrule
+Median $\Delta\mathrm{AIC}$ & \multicolumn{2}{c}{$+6.6$} \\
+\bottomrule
+\end{tabular}
+\caption{AIC comparison: Yukawa vs NFW.
+$\Delta\mathrm{AIC} = \mathrm{AIC}_{\mathrm{Yuk}} - \mathrm{AIC}_{\mathrm{NFW}}$.}
+\label{tab:nfw}
+\end{table}
+
+While NFW is generally preferred, the Yukawa profile achieves
+comparable or superior performance in 33\% of galaxies (58 systems).
+The median $\Delta\mathrm{AIC} = +6.6$ represents a moderate
+preference, below the threshold for strong evidence ($\Delta\mathrm{AIC} > 10$).
+$\Delta\mathrm{AIC}$ is evaluated with both kernels fitted on the
+same data cut and error floor---the $(r_{\min}, \sigma_f)$
+configuration selected by the Yukawa fit---since AIC values are
+comparable only on identical data with an identical noise model.
+Selecting each kernel's own AIC-optimal configuration instead
+shifts the median to $+9.5$, further in NFW's favour, moving four
+galaxies across the $|\Delta\mathrm{AIC}| = 2$ boundary without
+altering any conclusion.
+
+\subsection{Subsample analysis by galaxy mass}
+\label{sec:subsample}
+
+To investigate whether the Yukawa profile performs differently
+across galaxy types, we partition the sample by
+maximum observed velocity $V_{\max}$:
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccc}
+\toprule
+Subsample & $N$ & Median $\Delta$AIC & Yuk.\ comp.\ or better \\
+\midrule
+$V_{\max} < 80$ km/s (dwarf/LSB) & 59 & $+2.8$ & 42\% \\
+$80 \leq V_{\max} < 150$ km/s & 60 & $+13.0$ & 22\% \\
+$V_{\max} \geq 150$ km/s (massive) & 56 & $+11.3$ & 36\% \\
+\bottomrule
+\end{tabular}
+\caption{NFW comparison by galaxy mass subsample.
+``Comp.\ or better'' means $\Delta\mathrm{AIC} \leq 2$.}
+\label{tab:subsample}
+\end{table}
+
+Two features are notable.
+First, the dwarf/LSB subsample shows the smallest median
+$\Delta\mathrm{AIC} = +2.8$, suggesting a reduced NFW advantage
+in low-mass systems.
+The inner velocity plateau of the Yukawa profile
+(Section~\ref{sec:micro}) may contribute to this improved
+relative performance, though a detailed investigation of
+inner density slopes is beyond the scope of this paper.
+Second, 7 of the 10 galaxies where Yukawa is decisively preferred
+($\Delta\mathrm{AIC} < -2$) are massive spirals
+($V_{\max} \geq 150$~km/s), suggesting that the Yukawa cutoff
+scale $r_c$ may be particularly well-suited to the halo structure
+of these systems.
+
+\subsection{Context}
+
+Several considerations inform the interpretation of this comparison:
+
+\begin{enumerate}
+\item The NFW profile is an empirical fit from $N$-body simulations,
+  refined over three decades.
+  The Yukawa profile is derived from a microscopic construction
+  with no optimization for rotation curve phenomenology.
+  Achieving performance within $\Delta\mathrm{AIC} \sim 7$ of NFW
+  is a nontrivial result for a microscopically motivated profile.
+
+\item The comparison is at equal per-galaxy parameter count: the
+  NFW inner and outer slopes are fixed ($-1$ and $-3$), so both
+  kernels carry exactly two per-galaxy parameters (a scale and an
+  amplitude).  The AIC difference therefore reflects fit quality
+  alone, not functional flexibility.
+
+\item The Yukawa profile produces an inner velocity plateau
+  ($V^2 \to \mathrm{const}$ as $r \to 0$), providing a qualitatively
+  different inner structure from the NFW profile.
+  The reduced NFW advantage in dwarf galaxies is consistent with
+  this structural difference, though a full density-profile
+  comparison is deferred to future work.
+\end{enumerate}
+
+
+% ===================================================================
+\section{Robustness Analysis}
+\label{sec:robust}
+% ===================================================================
+
+\subsection{Fitting space: $V^2$ vs.\ $V$}
+
+Performing both parameter estimation and scoring entirely in
+$V$ space (via iterative nonlinear optimization) yields
+qualitatively consistent results: the finite/boundary split
+shifts from 101/74 to 95/80, and $\chi^2/\mathrm{pt}$ increases
+from 1.08 to 1.32.
+The NFW comparison remains similar.
+The $V^2$ approach is adopted as primary because it is standard
+in the SPARC literature and exploits the physical linearity of
+the circular velocity equation.
+
+\subsection{Error treatment}
+
+Replacing $\sigma_V = \max(\delta V, \sigma_f)$ with quadrature
+addition $\sigma_V = \sqrt{\delta V^2 + \sigma_f^2}$ produces
+negligible changes in the aggregate statistics.
+
+\subsection{Grid boundaries}
+
+Varying $m_{\min}$ from 0.001 to 0.002~kpc$^{-1}$
+($r_{c,\max} = 500$--$1000$~kpc) changes the boundary fraction
+by $\lesssim 5\%$, confirming the 58\%/42\% split is not a
+grid artifact.
+
+\subsection{Stellar mass-to-light prior}
+\label{sec:ml-prior}
+
+As noted in Section~\ref{sec:results}, the uninformative range on
+$\mu$ permits solutions with vanishing stellar contribution.
+To test whether the core findings depend on this freedom, we
+repeat the analysis imposing a lognormal prior on the stellar
+mass-to-light rescaling, centered on $\mu = 1$
+(i.e.\ the fiducial $\Upsilon_*$) with a scatter of 0.1~dex,
+following standard practice in SPARC halo fitting
+\cite{Li:2020iib}, with the same prior applied to both kernels.
+Two implementations bracket the result.
+In the first, $\mu$ is selected by the penalized (maximum a
+posteriori) Gaussian likelihood in velocity space over a
+0.02-dex grid, with $B$ solved at each $\mu$ by the same
+$V^2$-space weighted least squares as the fiducial pipeline.
+In the second, $\mu$ is fixed at unity and the machinery is
+otherwise \emph{identical} to the fiducial pipeline, removing any
+prior-strength ambiguity.
+
+The result is a qualitative change, not a perturbation.
+Under the lognormal prior, the finite/boundary split becomes
+12/163 (7\%/93\%), the median finite $r_c$ becomes 6.4~kpc, the
+median $\chi^2/\mathrm{pt}$ becomes 1.14, and the median
+$\Delta\mathrm{AIC}$ relative to NFW (fitted under the same
+prior) becomes $+7.7$.
+With $\mu$ fixed at unity, the split becomes 4/171 (2\%/98\%),
+the median $\chi^2/\mathrm{pt}$ rises to 1.48, the median
+$\Delta\mathrm{AIC}$ is $+6.6$, and the number of
+Yukawa-preferred galaxies falls from 10 to zero.
+The galaxies whose finite $r_c$ survives the physical
+normalization (DDO168, NGC2366, UGC05764) are gas-dominated
+dwarfs, for which the stellar normalization is immaterial by
+construction.
+
+The qualitative conclusions of the free-$\mu$ analysis are
+therefore \emph{not} preserved: the finite-$r_c$ population is a
+creature of the unconstrained stellar freedom---the kernel
+achieves its fiducial success substantially by suppressing the
+stellar contribution and absorbing it into the halo shape---and
+under a physical $\Upsilon_*$ the sample almost uniformly prefers
+the unscreened ($r_c \to \infty$) limit.
+We record one further sensitivity uncovered by this test: with
+the velocity-space MAP estimator and \emph{no} prior, the split
+is 44/131 (25\%/75\%), so the finite/boundary classification also
+depends appreciably on the estimator itself.
+Both facts point the same way: $r_c$ is not a robustly
+constrained physical scale in this sample, which is precisely
+what is expected if the Yukawa kernel is the wrong functional
+form and its per-galaxy freedom is absorbing missing
+acceleration-dependent physics
+(Sections~\ref{sec:a0} and~\ref{sec:ac-test}).
+The model-comparison verdict---NFW moderately preferred---is
+unchanged in every variant.
+
+
+
+\subsection{Lower-boundary censoring of $r_c$}
+
+The fiducial grid spans $r_c \in [2, 800]$~kpc, and the upper
+boundary is treated as censored (the 74 boundary systems).  The
+lower boundary deserves---and on inspection requires---the same
+treatment: the $[2,5)$~kpc bin is the most populated (26 galaxies)
+and the finite-$r_c$ 10th percentile sits exactly on the 2~kpc grid
+edge.  Extending the grid to $r_c \in [0.25, 800]$~kpc (the
+fiducial grid an exact subset; all 175 galaxies rerun) shows the
+pile-up to be partly a wall artifact: 16 of the 26 migrate below
+2~kpc (15 of them had sat exactly on the edge), with median
+$\Delta\mathrm{AIC} = -1.4$ and up to $-28.5$ (UGC04278); 8 of
+the 16 run to the new grid edge at $0.13$~kpc, preferring an
+ever-smaller cutoff---no preferred scale at all, the Yukawa kernel
+degenerating toward a point-mass term.  The finite-$r_c$ 10th
+percentile drops from $2.0$ to $0.16$~kpc and the span widens to
+$[0.13, 734]$~kpc.  The correction \emph{strengthens} the
+non-universality failure mode: the true spread of the preferred
+range is wider than the fiducial grid could express.  Statements
+involving small-$r_c$ systems elsewhere in this paper (notably the
+$r_c$--$V_{\max}$ scalings of Section~\ref{sec:ac-test}) carry
+this censoring caveat.  (Scripts and per-galaxy table:
+\texttt{rc\_floor.py}, \texttt{results/rc\_floor.csv}.)
+
+\subsection{Configuration selection}
+
+The primary analysis selects the best of nine
+$(r_{\min}, \sigma_f)$ configurations per galaxy.
+To verify that this selection does not introduce significant
+bias, we also perform a fixed-configuration analysis using
+$r_{\min} = 0$~kpc and $\sigma_f = 6$~km/s uniformly for all
+galaxies.
+Under fixed configuration, the finite/boundary split shifts to
+97/78 (55\%/45\%), the median $r_c$ shifts to 7.3~kpc, and the
+median $\chi^2/\mathrm{pt}$ increases to 1.54.
+The core qualitative findings---a substantial fraction of
+finite-$r_c$ galaxies, a broad $r_c$ distribution, and
+moderate NFW preference---are preserved.
+The multi-configuration analysis is adopted as primary because
+it better accommodates the heterogeneous data quality and radial
+coverage of the SPARC sample.
+
+
+% ===================================================================
+\section{Discussion}
+\label{sec:discuss}
+% ===================================================================
+
+\subsection{Relation to previous Yukawa studies}
+
+Previous applications of Yukawa potentials to galaxy rotation
+curves \cite{deAlmeida:2018kwq,Henrichs:2021bnd,Hassan:2025yuk}
+introduce the Yukawa correction as a phenomenological fifth force
+arising from $f(R)$ or scalar-tensor modifications of gravity.
+In those frameworks, the Yukawa coupling $\beta$ and range $\lambda$
+are free parameters with no specified microphysical origin.
+
+In contrast, the present work derives the halo functional form
+from a definite microscopic construction (NJL-type four-fermion
+interaction on a lattice), where the halo kernel $X_h(r)$ and its
+characteristic length scale $r_c = 1/m$ are consequences of
+Hubbard--Stratonovich bosonization rather than a phenomenological
+ansatz.
+The amplitude $B$ and mass-to-light rescaling $\mu$ remain
+phenomenological parameters at the galactic level; the microscopic
+construction motivates the kernel shape and its length scale, but
+does not yet predict the overall normalization.
+
+It is important to note that $B$ is not an arbitrary dark halo mass
+analogous to the NFW $M_{200}$.
+In the microscopic theory, the condensate field $\chi$ is directly
+sourced by the baryonic density $J_B$
+(Eq.~\ref{eq:scalar-field}), so the halo amplitude is in
+principle determined by the baryon--condensate coupling $\mu_c$
+and the total baryonic mass $M_B$.
+This baryon-sourced structure means that the halo normalization
+is not independent of the visible matter distribution---a feature
+that may eventually provide a physical basis for the empirical
+correlations between baryonic and dynamical masses observed in
+galaxies \cite{McGaugh:2016leg,Lelli:2017vgz}, though the present
+paper does not yet derive this connection quantitatively.
+
+Conceptually, a baryon-sourced halo places the model between
+particle dark matter and modified gravity: the dynamical mass
+tracks the visible matter through Eq.~\eqref{eq:scalar-field}, as in
+modified-gravity scenarios, yet it arises from a definite
+microscopic field rather than a postulated force law.  This
+positioning carries the corresponding obligations.  The model must
+ultimately confront the tests that distinguish a sourced force from
+collisionless matter---most sharply systems in which the
+gravitational and baryonic centroids are spatially displaced (e.g.\
+merging clusters such as the Bullet Cluster), together with
+cluster-scale dynamics and the acoustic peaks of the cosmic
+microwave background.  These probes lie beyond the galactic
+rotation curves examined here and are deferred to future work.
+
+In the present analysis, $B$ is nevertheless treated as a free
+parameter.
+This is a deliberate choice: by decoupling the test of the
+\emph{spatial geometry} of the halo kernel $X_h(r)$ from the
+\emph{absolute calibration} of the microscopic coupling $\mu_c$,
+we avoid conflating uncertainties in stellar mass-to-light ratios
+with uncertainties in the theoretical normalization.
+The present paper therefore tests a specific and falsifiable
+prediction---the Yukawa radial shape and its characteristic
+cutoff scale $r_c$---while deferring the absolute normalization
+to future work in which $B$ would be derived from the gap equation
+and baryon--condensate coupling.
+
+\subsection{An emergent acceleration scale}
+\label{sec:a0}
+
+The non-universality of the fitted mass (Section~\ref{sec:universal-m})
+and its trend with galaxy velocity (Section~\ref{sec:subsample}) point
+beyond the fixed-range picture. Two considerations sharpen this.
+
+\emph{A constraint.} Read literally as a fixed-range field of Compton
+wavelength $r_c \sim 15$~kpc that is sourced by baryons and acts on
+baryons, the halo is a Yukawa fifth force. For a matter-coupled
+scalar the direct exchange force dominates the self-gravity of the
+sourced cloud by a factor $\sim (G M_B/R_B c^2)^{-1} \gg 1$, so the
+rotation-curve effect is carried by the force, not by an extra
+gravitating mass. To reproduce the missing acceleration this force
+must be of gravitational strength on galactic scales; since its range
+vastly exceeds the Solar System, the same force would be essentially
+unscreened there, producing a post-Newtonian deviation
+$|\gamma-1|\sim\mathcal{O}(1)$ in conflict with the Cassini bound
+$|\gamma-1| < 2.3\times10^{-5}$. A fixed-range, universal Yukawa
+interpretation is therefore disfavoured---independently of the
+fitting results, and consistent with the data's own preference
+against a universal mass.
+
+\emph{A resolution.} The empirical pattern---a length that scales with
+the system, equivalently a fixed acceleration scale---is the hallmark
+of the radial acceleration relation
+\cite{McGaugh:2016leg,Lelli:2017vgz}. Both the constraint and the
+pattern are met if the scalar response is \emph{acceleration
+dependent} rather than fixed-range: a non-canonical (k-mouflage)
+kinetic sector, $\mathcal{L} = \Lambda_{\rm DE}^4\,
+K\!\big((\partial\chi)^2/\Lambda_{\rm DE}^4\big) - \chi\,
+T^\mu_{\ \mu}/M_{\rm Pl}$, screens the force where the local
+acceleration is large (the Solar System, $a \gg a_0$) and restores it
+where the acceleration is small (galaxy outskirts, $a \lesssim a_0$).
+Absence of ghost and gradient instabilities ($K' > 0$, $c_s^2 \le 1$)
+selects the enhancing, MOND-like branch; the opposite sign is not an
+alternative phenomenology but a pathology.
+
+The acceleration scale is not free. In this framework the infrared is
+dominated by the dark-energy density of the same condensate,
+$\rho_{\rm DE}\sim\Lambda_{\rm DE}^4$, and the crossover acceleration
+where the kinetic sector turns over,
+$(\partial\chi)^2\sim\Lambda_{\rm DE}^4$, is
+\begin{equation}
+a_0 \;\sim\; \frac{\Lambda_{\rm DE}^2}{M_{\rm Pl}^{\rm (full)}}
+\;\approx\; 2\times10^{-10}\ \mathrm{m\,s^{-2}}
+\;\sim\; \frac{cH_0}{2\pi},
+\label{eq:a0}
+\end{equation}
+within a factor of two of the rotation-curve value
+$a_0^{\rm obs}\approx1.2\times10^{-10}\ \mathrm{m\,s^{-2}}$.
+Equation~\eqref{eq:a0} ties the galactic acceleration scale to the
+cosmological one, giving a structural reading of the long-noted
+coincidence $a_0\sim cH_0\sim c^2\sqrt{\Lambda}$: the dark-matter and
+dark-energy phenomenologies share a single scale because they are
+different infrared aspects of one condensate.
+
+\emph{The mediator's identity.}  The microphysics independently
+excludes the fixed-mass scalar as the galactic mediator: the
+companion lattice measurement places the scalar-channel composite
+at the dynamical fermion scale ($m_\sigma \simeq 0.83 \times
+2m_{\rm dyn}$---a microscopic mass, $m_\sigma \gg \mathrm{kpc}^{-1}$,
+at the Planck-scale operating point---
+approaching the continuum value $2m_{\rm dyn}$ in the chiral
+limit; Section~\ref{sec:micro}), so the $\sigma$ integrates out
+more than fifty orders of magnitude above any galactic scale.
+The framework's light degree of freedom is instead the
+condensate's \emph{angular pseudo-Goldstone}, whose potential is
+protected to be exponentially flat.  Its coupling route, however,
+is constrained by two results computed since the fiducial analysis
+(companion dark-energy paper).  First, the superfluid-phonon
+($P(X)$) reading is closed by a two-body theorem: the mean-field
+equation of state of a contact pairing channel is
+$P \propto (\mu-\mu_c)^2$ at onset for any coupling strength,
+never the $(\mu-\mu_c)^{3/2}$ a MOND-like force law requires---the
+structure superfluid dark matter models
+\cite{Berezhiani:2015bqa} must \emph{postulate}.  Second, parity
+forbids the pseudo-Goldstone any linear coupling to unpolarized
+matter, and the disformal coupling it does acquire at loop level
+carries Planck-scale coefficients, suppressed at galactic gradients
+by $(b/m_{\rm dyn})^2 \sim 10^{-122}$.
+The remaining candidate was the gradient response of the
+topological (monopole) sector that was, at the time, also the
+candidate generator of the dark-energy scale---a candidacy since
+terminated by direct measurement in the companion paper (its
+susceptibility sits at the cutoff scale, not the meV scale).  That
+computation, pre-registered in the companion paper, has now been
+executed at leading order: the dilute gas acts on the angular mode
+through the periodic potential it generates, so the response is the
+sine-Gordon soliton lattice, solvable exactly.  The verdict is sharp
+on both sides.  The crossover lands at precisely the required scale,
+$X \sim \Lambda_{\rm DE}^4$: the scale selection works.  But the
+low-$X$ response is $L \propto X^{1/2}$ (wall-lattice pinning),
+never the $X^{3/2}$ of a MOND force law, and, independently, nothing
+sources galactic $\theta$-gradients in the first place
+($\theta = \mathrm{const}$ solves the field equation in any static
+matter background under the allowed disformal coupling).  In the
+present dilute-monopole realization, the same topology that
+generates the meV crossover does so through a local periodic
+potential, and a potential yields walls, not MOND.  The
+emergent-MOND reading of this framework therefore fails at leading
+order, and Eq.~\eqref{eq:a0} stands as an unexplained but robust
+structural coincidence.
+
+We are explicit about status. The scale, Eq.~\eqref{eq:a0}, and the
+direction (MOND-like, by consistency) are robust; a first-principles
+demonstration that the condensate generates the requisite k-mouflage
+kinetic function---with an $\mathcal{O}(1)$ coefficient of the correct
+sign---remains to be completed and is the principal theoretical task
+left open here. A companion analysis develops the dark-energy sector
+that fixes $\Lambda_{\rm DE}$.
+
+\subsection{A direct test: characteristic accelerations at the
+fitted cutoff radii}
+\label{sec:ac-test}
+
+The strongest form of the acceleration-scale reading makes a
+falsifiable prediction: if the per-galaxy $r_c$ marks the radius at
+which the local acceleration crosses a universal threshold, then
+$a_c \equiv V_{\rm obs}^2(r_c)/r_c$ should cluster at a single value
+$\sim a_0$, independently of galaxy properties.  We test this with
+criteria fixed in advance: clustering requires a scatter
+$\lesssim 0.3$~dex in $\log_{10} a_c$ and no significant residual
+trend with $V_{\max}$.  To avoid extrapolation, only galaxies whose
+$r_c$ lies within the radial coverage of the data are evaluated; in
+the fiducial run this retains 33 of the 101 finite-$r_c$ galaxies,
+a selection (toward smaller $r_c$) that we note explicitly.
+
+The test fails (Fig.~\ref{fig:ac-test}).  The retained accelerations
+have median $a_c = 2.7\times10^{-11}\ \mathrm{m\,s^{-2}} \approx
+0.22\,a_0^{\rm obs}$ with a scatter of $0.34$~dex, and---decisively---a
+strong systematic trend with velocity:
+$d\log a_c/d\log V_{\max} = 1.09 \pm 0.17$
+(Spearman $\rho = 0.72$, $p = 3\times10^{-6}$).
+The verdict is robust across methodology: an alternative run using
+the extended-source convolution kernel and $V^2$-space error
+propagation, with 100 galaxies inside coverage, gives a slope of
+$1.33 \pm 0.10$ and a scatter of $0.44$~dex.
+A constant characteristic acceleration would require
+$r_c \propto V_{\max}^{2}$; the measured $r_c$--$V_{\max}$ scaling
+is not only shallower but is itself unstable across samples:
+$0.51 \pm 0.24$ on the 33-galaxy subsample above,
+$0.82 \pm 0.15$ on the 156 finite-$r_c$ galaxies of the
+extended-source run, and $1.39 \pm 0.22$ on the 101 finite-$r_c$
+galaxies of the fiducial run.  No single exponent describes it, and
+the instability is itself diagnostic: $r_c$ is not a well-defined
+physical scale of the sample---a further symptom, alongside the
+non-universality of $m$, of a parametrization organizing itself
+around the baryon distribution rather than around any physical
+length.  The statement that survives every sample and methodology
+is the one that matters: $a_c$ \emph{tracks} $V_{\max}$ (slopes
+$1.09 \pm 0.17$ and $1.33 \pm 0.10$), far from the zero slope a
+constant $a_c$ would require.
+
+Two conclusions follow.  First, the per-galaxy $r_c$ of the Yukawa
+parametrization is \emph{not} an acceleration-scale proxy: the
+fixed-range kernel, forced onto an acceleration-dependent response,
+selects a length governed by the baryon distribution rather than by
+the $a_0$ crossing.  This is the second, independent symptom of the
+wrong-kernel diagnosis (the first being the non-universality of $m$
+itself, Section~\ref{sec:universal-m}).
+Second, the failure does \emph{not} exclude an underlying universal
+$a_0$ at the pointwise level, where it is in fact well established:
+the radial acceleration relation in these same data, with stellar
+mass-to-light ratios fixed at population-synthesis values, exhibits
+$\sim 0.13$~dex scatter about a single
+$a_0 \approx 1.2\times10^{-10}\ \mathrm{m\,s^{-2}}$
+\cite{McGaugh:2016leg,Lelli:2017vgz}.
+Our own fits cannot presently adjudicate this level: with the
+deliberately uninformative unbounded $\mu \geq 0$ of
+Section~\ref{sec:method}, the pointwise relation constructed from
+the fitted $\mu$ values is substantially degraded (and in the
+fiducial configuration destroyed), because unconstrained per-galaxy
+mass-to-light rescalings absorb precisely the baryonic-acceleration
+information the relation encodes.  The operational lesson for the
+planned refit is therefore concrete: an acceleration-dependent
+kernel with a \emph{single} fitted $a_0$, stellar mass-to-light
+priors in place of free $\mu$, and evaluation in the pointwise
+$g_{\rm obs}$--$g_{\rm bar}$ plane rather than through any derived
+per-galaxy length.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.98\columnwidth]{fig4_ac_test.pdf}
+\caption{Direct test of the $r_c$-as-transition-radius reading
+(fiducial run, 33 galaxies with $r_c$ inside the radial coverage).
+\textit{Left}: characteristic acceleration
+$a_c = V_{\rm obs}^2(r_c)/r_c$ against $V_{\max}$; the fitted slope
+$1.09\pm0.17$ (red) is inconsistent with the constant-$a_c$
+prediction (gray dashed: $a_0^{\rm obs}$), which would require zero
+slope.
+\textit{Right}: distribution of $\log_{10} a_c$; scatter 0.34~dex.}
+\label{fig:ac-test}
+\end{figure}
+
+This analysis is performed on the free-$\mu$ fiducial fits and
+inherits their stellar freedom; under the physical prior of
+Section~\ref{sec:ml-prior} the finite-$r_c$ population itself
+largely vanishes, which supersedes rather than alters the
+conclusion---in neither treatment does an $r_c$-level $a_0$
+crossing exist.
+Empirically, then, the refit of the SPARC sample with an
+acceleration-dependent profile is the analysis this result demands;
+it is performed in Section~\ref{sec:refit}.
+
+
+
+\section{A single-acceleration-scale refit}
+\label{sec:refit}
+
+The three failure modes documented above prescribe the analysis
+that must replace the fixed-range fit: an acceleration-dependent
+kernel with a \emph{single} global scale, physical stellar
+normalization, and no per-galaxy halo freedom.  This section
+performs that refit and compares it, under strictly identical
+methodology, with the Yukawa and NFW kernels.
+
+\subsection{Kernel, nuisances, and likelihood}
+
+For the acceleration-dependent response we adopt the empirical
+radial-acceleration-relation (RAR) form
+\cite{McGaugh:2016leg},
+\begin{equation}
+g_{\rm pred} \;=\; \frac{g_{\rm bar}}{1 - e^{-\sqrt{g_{\rm bar}/a_0}}},
+\qquad
+g_{\rm bar}(r) = \frac{V_{\rm gas}^2 + \mu\,(V_{\rm disk}^2 + V_{\rm bul}^2)}{r},
+\label{eq:rar-kernel}
+\end{equation}
+with $a_0$ a single global parameter shared by all 175 galaxies.
+Equation~\eqref{eq:rar-kernel} is a phenomenological stand-in for
+the $K(X)$ response of Section~\ref{sec:a0}; its shape is an
+empirical input, not a derivation, and replacing it with the
+condensate-derived kinetic function remains the open theoretical
+step.
+
+Each galaxy carries three nuisance parameters with observational
+priors: the stellar rescaling $\mu$ (lognormal, 0.1~dex about the
+fiducial $\Upsilon_*$, as in Section~\ref{sec:ml-prior}), the
+distance factor $d = D/D_0$ (Gaussian, width $e_D/D_0$ from the
+SPARC catalog; $r \to d\,r$ and the flux-based
+$V_{\rm bar}^2 \to d\,V_{\rm bar}^2$), and the inclination $i$
+(Gaussian, width $e_i$; $V_{\rm obs} \to V_{\rm obs}\sin i_0/\sin i$)
+\cite{Li:2018tdo}.
+In place of the arbitrary error floor of the fiducial analysis, the
+likelihood carries a single global fractional intrinsic scatter,
+\begin{equation}
+\sigma_{{\rm tot},i}^2 \;=\; (\sigma_{V,i}\,s)^2
+ + (f_{\rm int}\,V_{{\rm obs},i}\,s)^2 ,
+\end{equation}
+where $s \equiv \sin i_0/\sin i$ is the inclination rescaling
+applied to the observed velocities, so that the noise model
+transforms with the data it describes.  The likelihood is fitted by
+maximum likelihood (the Gaussian normalization terms
+penalize inflating $f_{\rm int}$); the noise is attached to the
+\emph{observed} velocities so that the error model is identical
+across the models being compared.
+The Yukawa and NFW kernels are fitted under exactly the same
+nuisance structure and each with its own global $f_{\rm int}$,
+retaining their per-galaxy scale and amplitude parameters.
+
+\subsection{Results}
+
+\begin{table}[t]
+\centering
+\begin{tabular}{lccccc}
+\hline
+Model & Global & Per-galaxy & $f_{\rm int}$ &
+$\Delta\mathrm{AIC}$ & median $\chi^2/\mathrm{pt}$ \\
+\hline
+Single-$a_0$ (RAR) & $a_0$, $f_{\rm int}$ & --- & 5.0\% & $0$ & 0.83 \\
+Yukawa & $f_{\rm int}$ & $m$, $B$ & 15.6\% & $+4859$ & 0.75 \\
+NFW & $f_{\rm int}$ & $r_s$, $B$ & 3.4\% & $-1614$ & 0.65 \\
+\hline
+\end{tabular}
+\caption{Three-model comparison over all 175 SPARC galaxies under
+identical nuisance treatment ($\mu$, $D$, $i$ per galaxy with
+observational priors) and the intrinsic-scatter likelihood.
+$\Delta\mathrm{AIC}$ is quoted relative to the single-$a_0$ model
+(negative favours the alternative); all common nuisance-parameter
+counts cancel in the differences.}
+\label{tab:refit}
+\end{table}
+
+The refit yields
+\begin{equation}
+a_0 \;=\; 0.95^{+0.03}_{-0.03} \times 10^{-10}~\mathrm{m~s^{-2}}
+\quad (\Delta(-2\ln L) = 1,\ \text{profiled}),
+\end{equation}
+with an intrinsic velocity scatter of 5.0\% and median
+$\chi^2/\mathrm{pt} = 0.83$; under floor-based error models the
+fitted value moves to $1.05\times10^{-10}$ (6~km~s$^{-1}$ floor) and
+$1.28\times10^{-10}$ (3~km~s$^{-1}$ floor), so the full range
+$(0.96$--$1.28)\times10^{-10}$~m~s$^{-2}$ brackets the canonical
+$a_0 = 1.2\times10^{-10}$.
+The statistical interval is a fully profiled one: $f_{\rm int}$ is
+re-optimized at each $a_0$, and the per-galaxy nuisance optimization
+is polished continuously from its grid maximum (scripts
+\texttt{a0\_profile\_likelihood.py}, \texttt{fitlib.py}).  The
+polish matters: with grid-MAP nuisances the $-2\ln L$ profile is a
+staircase with $\sim\pm10$-unit jumps---an order of magnitude above
+the $\Delta = 1$ criterion---so the conditional slice quoted in an
+earlier version of this analysis, $[0.945, 1.077]\times10^{-10}$,
+was dominated by quantization noise, which \emph{inflated} it (the
+earlier withdrawal was correct; its stated direction of bias was
+not).  The smooth profile (residual jitter $0.9$ units) gives
+$[0.920, 0.979]\times10^{-10}$, confirmed by an independent
+curvature estimate ($[0.921, 0.978]$).
+Two honesty notes accompany this interval.  First, the empirical
+fold-to-fold spread of $a_0$ in the cross-validation below,
+$\pm0.10\times10^{-10}$, exceeds the formal interval by a factor of
+$\sim3$: the pointwise likelihood understates galaxy-level
+heterogeneity (the effective sample size is closer to the 175
+galaxies than to the $\sim3{,}300$ points), and we regard the fold
+spread as the more conservative statistical error.  Second, the
+error-model systematic above dominates both.
+The stellar rescalings sit where a physical population should
+($\mu$ within a factor of two of unity, no $\mu = 0$ collapse), in
+sharp contrast with the free-$\mu$ Yukawa fits of
+Section~\ref{sec:results}.
+
+\textbf{Out-of-sample test.}
+The single-$a_0$ claim is a claim about transfer, so we test it as
+one (script \texttt{heldout\_validation.py}; 5-fold
+cross-validation, folds stratified by $V_{\max}$ quartile and
+quality flag).  On each fold, $a_0$ and $f_{\rm int}$ are frozen
+from the training galaxies; on held-out galaxies the single-$a_0$
+model may adjust only its nuisances under their observational
+priors, while the Yukawa and NFW kernels refit their two per-galaxy
+parameters on the test galaxy itself---an asymmetry that favours the
+kernels, which are not predicting held-out data but fitting it.
+Despite this handicap the single-$a_0$ model beats the Yukawa kernel
+out of sample, pooled $\Delta(-2\ln L) = -4207$ (per-point $7.56$
+vs $8.80$; per-galaxy wins $147/28$), and its fitted $a_0$ is stable
+across folds, $(0.80$--$1.08)\times10^{-10}$ with spread
+$\pm0.10$---well inside the pre-registered failure band.  NFW's
+held-out advantage ($+2377$) equals its in-sample gap plus the
+returned AIC penalty, as expected for a model exercising fresh
+per-galaxy freedom on test data.  A split-half variant (only
+$\sim86$ training galaxies) yields fold values
+$[0.79, 1.42]\times10^{-10}$: the global $a_0$ estimate requires
+of order a hundred galaxies to stabilize, which the 5-fold scheme
+provides.  A methodological byproduct of these gates---the
+grid-noise floor and its effect on interval estimation---is
+documented in the repository (\texttt{results/GATES.md}).
+
+Table~\ref{tab:refit} states the comparison.
+Against the Yukawa kernel the verdict is unambiguous: one global
+parameter outperforms $2\times175$ per-galaxy parameters by
+$\Delta\mathrm{AIC} = 4859$, and the fixed-range kernel needs an
+intrinsic scatter three times larger (15.6\%) to fit at all.
+The kernel this paper set out to test is not merely disfavoured
+relative to NFW; it is decisively inferior to the
+acceleration-dependent response it was, per-galaxy, imitating.
+
+Against NFW the honest statement is dual.
+NFW retains a moderate total-AIC advantage,
+$\Delta\mathrm{AIC} = -1614$ under the intrinsic-scatter
+likelihood ($-2092$ and $-4250$ under the 6 and 3~km~s$^{-1}$
+floors): the preference survives every error model, so we do not
+claim parity.
+Its texture, however, matters for interpretation: the per-galaxy
+median is small ($\Delta\mathrm{AIC} = -2.7$; 18\% of galaxies
+individually prefer the single-$a_0$ model, 25\% are
+indistinguishable at $|\Delta\mathrm{AIC}| \le 2$, 57\% prefer
+NFW), and roughly sixty per cent of the cumulative gap is carried
+by the ten most discrepant systems---massive, high-quality rotators
+where two per-galaxy parameters absorb residual systematics
+(non-circular motions, spiral structure) that a zero-freedom global
+law cannot.
+The same numbers hold on the standard quality cut
+($Q < 3$, $i \ge 30^\circ$; 153 galaxies).
+A comparison against cored halo families (Einasto, DC14) under this
+methodology, and a pointwise residual analysis, are the natural
+next data-side steps.
+
+\subsection{Status}
+
+What the refit establishes within this programme is the
+data-side half of the diagnosis: the SPARC sample is described,
+at few-per-cent intrinsic scatter, by a single acceleration scale
+consistent with $a_0 \sim \Lambda_{\rm DE}^2/M_{\rm Pl}$ up to the
+factor-of-two theoretical uncertainty discussed in
+Section~\ref{sec:a0}, using the very degrees of freedom
+(constrained $\mu$, $D$, $i$) under which the fixed-range kernel
+collapses.
+What it does not establish is the theory-side half: the response
+shape in Eq.~\eqref{eq:rar-kernel} is empirical, and the
+programme's claim to \emph{explain} rather than reparametrize this
+phenomenology rests on deriving the response from the framework's
+topological sector---the pre-registered gradient-response
+computation of the companion dark-energy paper, whose kill
+criterion (an analytic response at $X \sim \Lambda_{\rm DE}^4$)
+would close this route (Section~\ref{sec:future}).
+All numbers in this section regenerate from the public repository
+(scripts \texttt{rar\_refit.py}, \texttt{nuisance\_comparison.py},
+\texttt{intrinsic\_scatter\_comparison.py}, each with built-in
+validation gates).
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+We have confronted a Yukawa-type halo kernel, motivated by the
+scalar channel of a lattice fermion theory, with 175 SPARC
+galaxies.
+The key findings are:
+\begin{itemize}
+\item In the free-$\mu$ (uninformative stellar-mass) analysis,
+  58\% of galaxies yield finite cutoff radii with median
+  $r_c = 15.8$~kpc and good fit quality ($\chi^2/\mathrm{pt} = 1.08$).
+\item This population is prior-fragile: a physical stellar
+  normalization (lognormal 0.1-dex prior, or $\mu$ fixed at the
+  fiducial $\Upsilon_*$) collapses the finite-$r_c$ fraction to
+  7\% and 2\% respectively, the survivors being gas-dominated
+  dwarfs for which $\Upsilon_*$ is immaterial.  The free-$\mu$
+  results are accordingly diagnostics of the kernel shape's
+  mimicry capacity, not evidence for a screening-radius
+  population.
+\item The data do not support a single universal $m$: per-galaxy
+  values span $\sim$1.4~decades and trend with galaxy velocity,
+  pointing to an underlying \emph{acceleration scale} rather than a
+  fixed length.
+\item A pre-specified direct test shows, however, that the
+  per-galaxy $r_c$ is not itself an acceleration-scale proxy: the
+  characteristic accelerations $V^2(r_c)/r_c$ do not cluster but
+  scale as $V_{\max}^{1.1}$, robustly across methodologies.  The
+  single-$a_0$ structure resides at the pointwise radial
+  acceleration relation, which unconstrained per-galaxy
+  mass-to-light rescaling degrades; testing it within this
+  framework requires the mass-to-light--constrained,
+  acceleration-dependent refit performed in
+  Section~\ref{sec:refit}.
+\item Three independent failure modes---non-universality of $m$,
+  $a_c$ tracking $V_{\max}$, and prior fragility---converge on one
+  diagnosis: the Yukawa kernel is the wrong functional form, and
+  its per-galaxy freedom absorbs missing acceleration-dependent
+  physics.  Consistently, the companion lattice measurement places
+  the scalar composite at the dynamical fermion scale
+  ($m_\sigma = 2m_{\rm dyn} \gg \mathrm{kpc}^{-1}$); the last
+  candidate carrier---the monopole-sector gradient response---has
+  since been computed at leading order and found wanting: correct
+  crossover scale, wrong exponent ($X^{1/2}$, not $X^{3/2}$), no
+  galactic source.
+\item This acceleration scale, $a_0 \sim \Lambda_{\rm DE}^2/M_{\rm Pl}
+  \sim cH_0/2\pi$, matches the rotation-curve value within a factor of two
+  and coincides with the observed dark-energy scale: an unexplained
+  but robust coincidence between two \emph{observed} numbers, owing
+  nothing to this framework, whose own mechanisms for both sides
+  are now terminated (galactic: the leading-order response
+  computations above; dark-energy: the companion paper's C2a
+  measurement)---the joint-falsifiability structure of earlier
+  versions, cashed in the double-negative direction.  A fixed-range
+  interpretation is independently excluded by Solar-System
+  fifth-force bounds.
+\item Comparison with NFW shows moderate overall preference for NFW
+  (unchanged in every prior variant), with reduced NFW advantage in
+  dwarf galaxies in the free-$\mu$ analysis.
+\item The free-$\mu$ results are stable under alternative error
+  treatments, fitting-space choices, and fixed-configuration
+  fitting; the stellar mass-to-light prior is the one
+  methodological choice on which the finite-$r_c$ phenomenology
+  decisively depends.
+\item The single-$a_0$ refit (Section~\ref{sec:refit}) completes
+  the data-side case: one global acceleration scale,
+  $a_0 = (0.96$--$1.28)\times10^{-10}$~m~s$^{-2}$ across error
+  models, with physical stellar normalizations and 5\% intrinsic
+  scatter, decisively outperforms the fixed-range kernel
+  ($\Delta\mathrm{AIC} = +4859$) on the very sample where the
+  latter needed $2\times175$ parameters.
+\item NFW retains a moderate, error-model-robust total-AIC edge
+  over the single-$a_0$ model ($-1614$ to $-4250$), with a small
+  per-galaxy median and the cumulative gap concentrated in a
+  minority of massive systems; comparisons against cored halo
+  families under identical methodology are the outstanding
+  data-side test.
+\end{itemize}
+
+\subsection{Future directions}
+\label{sec:future}
+
+The central task set by this work was to determine whether the
+condensate generates the acceleration-dependent (k-mouflage)
+response posited in Section~\ref{sec:a0}.  Three microscopic routes
+have now been executed and closed at leading order, each against a
+pre-registered criterion: the pairing-channel equation of state
+(analytic, $P \propto (\mu-\mu_c)^2$ with measured exponent
+$2.005 \to 2.000$---a two-body theorem, never the
+$(\mu-\mu_c)^{3/2}$ that superfluid dark-matter constructions
+\cite{Berezhiani:2015bqa} must postulate); loop-level kinetic and
+disformal couplings (Planck-suppressed,
+$(b/m_{\rm dyn})^2 \sim 10^{-122}$); and the monopole-gas gradient
+response (exact sine-Gordon solution: correct crossover scale,
+wrong exponent, no source; Section~\ref{sec:a0}).  An
+environment-triggered variant is likewise closed for every
+\emph{monotone} local baryonic invariant, on five independent
+grounds (magnitude, stellar consistency, local-potential degeneracy,
+profile shape, ordering).  What remains registered but untested:
+a \emph{non-monotonic} baryon-window response of the monopole
+medium---a shell/torus-shaped activation region, geometrically
+adjacent to the phantom-dark-matter structures of MOND---whose
+decisive gates are a microscopically derived (not hand-drawn) window
+in the monopole core action and a thick-shell response producing
+flat rather than bump-like rotation curves; a near-critical
+interacting monopole ensemble; and a gravitational-polarization
+(anti-screening) branch.  Each is a new hypothesis, not a
+correction.  Since this list was drawn up, one route of a different
+type was pursued to a definite conclusion in the companion
+programme: a nonlocal, topological dark-matter object whose size
+would be set by the competition between the measured negative
+quartic coefficient (contraction) and an \emph{endogenous}
+isoscalar-vector repulsion (a Fierz-exact channel of the
+microscopic interaction, dynamized with healthy kinetic term,
+non-tachyonic mass, and topological-current coupling).  That
+competition has now been computed, and it does \emph{not} produce a
+continuum object: the vector repulsion saturates---bounded in
+radius by the composite cutoff, and bounded in the coupling because
+the RPA denominator screens it---while the negative-quartic
+contraction diverges, so the energy collapses to a cutoff-scale
+minimum with no continuum window at any coupling (companion note,
+gate \texttt{P5-OMEGA-01}, \texttt{FAILED}).  This route is
+therefore \emph{withdrawn as a live direction} and recorded among
+the closed ones; what survives is only the distinct cutoff-scale
+(lattice) question, which the effective description cannot address
+and which is not a galactic-dynamics proposal.  No route on this
+list currently carries microscopic support, and the paper's
+conclusions rest on none of them.
+On the data side, both the $r_c$-level test
+(Section~\ref{sec:ac-test}) and the single-$a_0$ refit
+(Section~\ref{sec:refit}) are now performed; the remaining data-side
+steps are a pointwise analysis in the
+$g_{\rm obs}$--$g_{\rm bar}$ plane (residual correlations of the
+refit against radius, surface brightness, and gas fraction), a
+comparison against cored halo profiles (Einasto, DC14) under the
+same nuisance and intrinsic-scatter treatment---NFW is the hardest
+two-parameter baseline in AIC terms, but not the best-fitting halo
+family in the literature---the cluster regime, where MOND-type
+responses historically fail and the framework must say something,
+and---should any response mechanism revive---the outer-cutoff
+signature that would distinguish a windowed medium from pure MOND.  The value of $\Lambda_{\rm DE}$ that fixes
+$a_0$ is developed in a companion analysis of the dark-energy sector
+of the same framework; closing the loop between the two would tie the
+galactic acceleration scale and the cosmological constant to a single
+microscopic origin.  Further extensions include a nonlinear numerical
+solution of the field equation with extended baryonic sources and the
+tensor channel of the same HS decomposition for emergent
+gravitational dynamics.
+
+The fitting code and data analysis pipeline are publicly available
+at \url{https://github.com/zetacheng/yukawa-sparc-fits}.
+
+
+% ===================================================================
+\section*{Acknowledgments}
+% ===================================================================
+
+The author acknowledges the use of large language models
+(Claude, Anthropic) as a research-assistance tool during this
+work, including assistance with algebraic derivations and their
+verification, fitting methodology, statistical analysis, and
+manuscript editing.
+All physical ideas and the model construction are the author's
+own; all derivations and numerical results were reviewed and
+verified by the author, who takes full responsibility for the
+content of the manuscript.
+The SPARC data were compiled by \cite{Lelli:2016zqa}.
+
+
+% No appendix in this version; vacuum structure deferred to companion paper.
+
+
+% ===================================================================
+\begin{thebibliography}{99}
+
+\bibitem{Lelli:2016zqa}
+F.~Lelli, S.~S.~McGaugh, and J.~M.~Schombert,
+``SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry
+and Accurate Rotation Curves,''
+\textit{Astron.\ J.}\ \textbf{152}, 157 (2016).
+
+\bibitem{Lelli:2017vgz}
+F.~Lelli, S.~S.~McGaugh, J.~M.~Schombert, and M.~S.~Pawlowski,
+``One Law to Rule Them All: The Radial Acceleration Relation of Galaxies,''
+\textit{Astrophys.\ J.}\ \textbf{836}, 152 (2017).
+
+\bibitem{McGaugh:2016leg}
+S.~S.~McGaugh, F.~Lelli, and J.~M.~Schombert,
+``Radial Acceleration Relation in Rotationally Supported Galaxies,''
+\textit{Phys.\ Rev.\ Lett.}\ \textbf{117}, 201101 (2016).
+
+\bibitem{Navarro:1996gj}
+J.~F.~Navarro, C.~S.~Frenk, and S.~D.~M.~White,
+``The Structure of Cold Dark Matter Halos,''
+\textit{Astrophys.\ J.}\ \textbf{462}, 563 (1996).
+
+\bibitem{deBlok:2009sp}
+W.~J.~G.~de~Blok,
+``The Core-Cusp Problem,''
+\textit{Adv.\ Astron.}\ \textbf{2010}, 789293 (2010).
+
+\bibitem{Bullock:2017xww}
+J.~S.~Bullock and M.~Boylan-Kolchin,
+``Small-Scale Challenges to the $\Lambda$CDM Paradigm,''
+\textit{Ann.\ Rev.\ Astron.\ Astrophys.}\ \textbf{55}, 343 (2017).
+
+\bibitem{Oman:2015xda}
+K.~A.~Oman \textit{et al.},
+``The unexpected diversity of dwarf galaxy rotation curves,''
+\textit{Mon.\ Not.\ Roy.\ Astron.\ Soc.}\ \textbf{452}, 3650 (2015).
+
+\bibitem{Li:2020iib}
+P.~Li, F.~Lelli, S.~S.~McGaugh, and J.~M.~Schombert,
+``A comprehensive catalog of dark matter halo models for SPARC galaxies,''
+\textit{Astrophys.\ J.\ Suppl.}\ \textbf{247}, 31 (2020).
+
+\bibitem{Li:2018tdo}
+P.~Li, F.~Lelli, S.~S.~McGaugh and J.~M.~Schombert,
+``Fitting the radial acceleration relation to individual SPARC
+galaxies,''
+Astron.\ Astrophys.\ \textbf{615}, A3 (2018)
+[arXiv:1803.00022 [astro-ph.GA]].
+
+\bibitem{Berezhiani:2015bqa}
+L.~Berezhiani and J.~Khoury,
+``Theory of dark matter superfluidity,''
+Phys.\ Rev.\ D \textbf{92}, 103510 (2015)
+[arXiv:1507.01019 [astro-ph.CO]].
+
+\bibitem{Sakharov:1967pk}
+A.~D.~Sakharov,
+``Vacuum Quantum Fluctuations in Curved Space and the Theory of
+Gravitation,''
+\textit{Sov.\ Phys.\ Dokl.}\ \textbf{12}, 1040 (1968).
+
+\bibitem{Volovik:2003fe}
+G.~E.~Volovik,
+\textit{The Universe in a Helium Droplet}
+(Oxford University Press, 2003).
+
+\bibitem{Barcelo:2005fc}
+C.~Barcel\'{o}, S.~Liberati, and M.~Visser,
+``Analogue Gravity,''
+\textit{Living Rev.\ Rel.}\ \textbf{8}, 12 (2005).
+
+\bibitem{Verlinde:2016toy}
+E.~P.~Verlinde,
+``Emergent Gravity and the Dark Universe,''
+\textit{SciPost Phys.}\ \textbf{2}, 016 (2017).
+
+\bibitem{Nambu:1961tp}
+Y.~Nambu and G.~Jona-Lasinio,
+``Dynamical Model of Elementary Particles Based on an Analogy
+with Superconductivity.\ I,''
+\textit{Phys.\ Rev.}\ \textbf{122}, 345 (1961).
+
+\bibitem{Nambu:1961fr}
+Y.~Nambu and G.~Jona-Lasinio,
+``Dynamical Model of Elementary Particles Based on an Analogy
+with Superconductivity.\ II,''
+\textit{Phys.\ Rev.}\ \textbf{124}, 246 (1961).
+
+\bibitem{Klevansky:1992qe}
+S.~P.~Klevansky,
+``The Nambu--Jona-Lasinio model of quantum chromodynamics,''
+\textit{Rev.\ Mod.\ Phys.}\ \textbf{64}, 649 (1992).
+
+\bibitem{Hubbard:1959ub}
+J.~Hubbard,
+``Calculation of Partition Functions,''
+\textit{Phys.\ Rev.\ Lett.}\ \textbf{3}, 77 (1959).
+
+\bibitem{Stratonovich:1957}
+R.~L.~Stratonovich,
+``On a Method of Calculating Quantum Distribution Functions,''
+\textit{Sov.\ Phys.\ Dokl.}\ \textbf{2}, 416 (1957).
+
+\bibitem{deAlmeida:2018kwq}
+\'{A}.~O.~F.~de~Almeida, L.~Amendola, and V.~Niro,
+``Galaxy rotation curves in modified gravity models,''
+\textit{J.\ Cosmol.\ Astropart.\ Phys.}\ \textbf{2018}(08), 012 (2018).
+
+\bibitem{Henrichs:2021bnd}
+J.~Henrichs, M.~Lembo, F.~Iocco, and L.~Amendola,
+``Testing gravity with the Milky Way: Yukawa potential,''
+\textit{Phys.\ Rev.\ D} \textbf{104}, 043009 (2021).
+
+\bibitem{Hassan:2025yuk}
+D.~S.~Hassan, M.~D.~Danarianto, and A.~Sulaksono,
+``The Milky Way and M31 rotation curves in Yukawa gravity,''
+\textit{Eur.\ Phys.\ J.\ C} \textbf{86}, 198 (2026).
+
+\bibitem{Hu:2000ke}
+W.~Hu, R.~Barkana, and A.~Gruzinov,
+``Fuzzy Cold Dark Matter,''
+\textit{Phys.\ Rev.\ Lett.}\ \textbf{85}, 1158 (2000).
+
+\bibitem{Hui:2016ltb}
+L.~Hui, J.~P.~Ostriker, S.~Tremaine, and E.~Witten,
+``Ultralight scalars as cosmological dark matter,''
+\textit{Phys.\ Rev.\ D} \textbf{95}, 043541 (2017).
+
+\bibitem{Schive:2014dra}
+H.-Y.~Schive, T.~Chiueh, and T.~Broadhurst,
+``Cosmic Structure as the Quantum Interference of a Coherent Dark Wave,''
+\textit{Nature Phys.}\ \textbf{10}, 496 (2014).
+
+\bibitem{Milgrom:1983ca}
+M.~Milgrom,
+``A modification of the Newtonian dynamics as a possible alternative
+to the hidden mass hypothesis,''
+\textit{Astrophys.\ J.}\ \textbf{270}, 365 (1983).
+
+\bibitem{Famaey:2011kh}
+B.~Famaey and S.~S.~McGaugh,
+``Modified Newtonian Dynamics (MOND),''
+\textit{Living Rev.\ Rel.}\ \textbf{15}, 10 (2012).
+
+\bibitem{Bekenstein:2004ne}
+J.~D.~Bekenstein,
+``Relativistic gravitation theory for the MOND paradigm,''
+\textit{Phys.\ Rev.\ D} \textbf{70}, 083509 (2004).
+
+\end{thebibliography}
+
+\end{document}
