@@ -1,0 +1,24 @@
+Paper 1 — results/intrinsic-scatter-repro reconstruction environment
+====================================================================
+
+This gate is a 2026 INDEPENDENT RECONSTRUCTION, not the lost original run.
+
+Compute environment (2026-07-19)
+  Python    : 3.11.15
+  NumPy     : 2.4.6
+  SciPy     : 1.17.1
+  pandas    : 3.0.3
+  Platform  : Linux-6.18.5-x86_64-with-glibc2.39 (x86_64)
+
+Producing script : scripts/intrinsic_scatter_repro.py
+Invocation       : python -m scripts.intrinsic_scatter_repro
+Wall time        : ~7 min (full 175-galaxy, 25-point a0 grid, bounded f_int fit)
+Pre-registration : derivations/p1-iscatter-repro/PREREGISTRATION.md
+Reused machinery : scripts/nuisance_comparison.py (unmodified) — SPARC loading,
+                   mu/d/i nuisance grids and priors, kernels, RAR nu, scale grids.
+
+Cross-platform note
+  This reconstruction uses grid-MAP nuisances and a bounded f_int optimizer;
+  floating-point reduction order and SciPy's optimizer path can shift the low
+  digits across platforms. Regression anchors use stated numerical tolerances,
+  never byte-identity.

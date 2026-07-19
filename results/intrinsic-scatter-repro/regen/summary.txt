@@ -1,0 +1,8 @@
+P1-ISCATTER-REPRO-01 — 2026 independent reconstruction (blind output)
+galaxies matched: 175
+fitted a0 (RAR): 9.7770e-11 m/s^2
+
+model                  -2lnL       k         AIC   dAIC_vs_RAR    f_int  med chi2/pt
+RAR single-a0        25435.2     527     26489.2            +0   0.0515        0.840
+Yukawa               29735.7     805     31345.7         +4857   0.1577        0.740
+NFW                  23140.5     864     24868.5         -1621   0.0330        0.647
