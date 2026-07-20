@@ -658,3 +658,104 @@ v13 (tracked historically as a v13 item); nothing outstanding here.
 ### Date opened / closed
 
 Found 2026-07-16 / retired 2026-07-16 (resolved in paper v13).
+
+---
+
+## Sea–Ice programme gate stubs (PROPOSED)
+
+The gate below is a **stub** created from the programme Sea–Ice research map
+(`0-programme:sea-ice/SEA_ICE_RESEARCH_MAP.md`, snapshot 2026-07-19,
+re-confirmed against this `GATES.md` before creation — no ID collision with
+`P1-FIDUCIAL-01`, `P1-AC-01`, `P1-MLPRIOR-01`, `P1-REFIT-01`,
+`P1-NUISANCE-01`, `P1-ISCATTER-01`, `P1-ISCATTER-REPRO-01`, `P1-A0ERR-01`,
+`P1-RCSLOPE-01`). It is the real, paper-owned object behind the Sea–Ice
+`SI-6` routing alias; the programme repo owns no evidence.
+
+**CLAIMS↔GATES note.** This gate ID has **no** claim row in `CLAIMS.md` yet,
+and none is added here. A claim appears only when the gate is actually run.
+The CLAIMS↔GATES guard (`tests/test_repository_structure.py ::
+test_every_claims_gate_has_a_gates_heading`) checks the CLAIMS→GATES
+direction only — every gate ID *cited in* `CLAIMS.md` must have a heading
+here — so a gate with no backing claim is tolerated and the guard is not
+weakened.
+
+## P1-SEAICE-RAR-01 — Derive the RAR and a universal `a_0` (not fit)
+
+Status: PROPOSED
+
+### Sea–Ice alias
+
+SI-6. Owner: Paper 1.
+
+### Scientific question
+
+Does the effective theory *derive* the radial-acceleration relation (RAR) and
+a universal `a_0`, **without inserting** the empirical interpolation function?
+
+### Scope
+
+A **derivation** gate: `g_obs(g_bar)` and `a_0` must come from the interface
+elastic response, the bound-mode response, and the resulting modified Poisson
+kernel — not from a fit. This is **distinct** from the existing `P1-ISCATTER-*`
+and RAR-*fit* gates (`P1-REFIT-01`, `P1-FIDUCIAL-01`, `P1-AC-01`), which fit or
+compare kernels to data; here the interpolation may not be an input.
+
+### Locked assumptions
+
+`CONVENTIONS.md`; the galaxy sample and benchmark registered before fitting
+(pre-registration policy §5); `a_0` derived from microscopic / interface
+parameters, not fitted; the empirical RAR interpolation function may not be
+used as an input.
+
+### Inputs
+
+Interface elastic response and bound-mode response from Paper 4
+(`P4-SEA-ICE-01`, `P4-BOUND-DM-01`); the modified Poisson kernel derived from
+them.
+
+### Dependency
+
+Depends on `P4-SEA-ICE-01` (SI-3) **and** `P4-BOUND-DM-01` (SI-5b) in
+`zetacheng/4-dark-energy-cosmology`. Terminal gate of the Sea–Ice critical
+chain.
+
+### Kill criterion
+
+The RAR must be inserted, or `a_0` is freely fitted, or the derived shape is
+wrong, or there is a lensing–dynamics mismatch → the galactic explanation
+fails.
+
+### Required computations
+
+(not started)
+
+### Required deliverables
+
+(not started)
+
+### Result
+
+(not started)
+
+### Reviewer verdict
+
+(not started)
+
+### Consequences
+
+Success would complete the Sea–Ice chain (galaxies from the microscopic
+theory); failure leaves the empirical RAR (`P1-CL-007` SUPPORTED) as evidence
+for the *phenomenon* only, not for a microscopic derivation.
+
+### Repository branch
+
+`sea-ice/gate-stubs`
+
+### Relevant files
+
+`0-programme:sea-ice/SEA_ICE_RESEARCH_MAP.md`,
+`0-programme:sea-ice/SEA_ICE_PREREGISTRATION_POLICY.md`.
+
+### Date opened / closed
+
+Opened 2026-07-20 / Open (PROPOSED stub).
